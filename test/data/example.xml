@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--downconverted from variant report schema version 2-->
+<vr:variant-report xmlns:vr="http://foundationmedicine.com/compbio/variant-report" curation-version-id="3600702" disease="OVARY" flowcell-analysis="2000013681" gender="female" human-genome-assembly="hg19" specimen-id="2001205343" study="FACT/bTMB-AMC-PRO-19-1209-CAM" test-request="ORD-0961212-01" test-type="BFAST">
+    <samples>
+         <sample name="ORD-0961212-01*US0939362.01" bait-set="CF3"/>
+    </samples>
+  <pertinent-genes/>
+  <aggregate-features/>
+  <short-variants>
+    <short-variant allele-fraction="0.0660" alternate-sequence="G" analytical-only="false" cds-effect="955_958delACTT" chromosome="chr10" depth="1470" equivocal="false" gene="PTEN" genomic-end="89720802" genomic-start="89720798" germline-status="unknown" percent-reads="6.60" position="chr10:89720803" protein-effect="T319fs*1" reference-sequence="GTACT" status="known" transcript="NM_000314" tumor-zygosity="unknown" variant-type="deletion">
+      <short-variant-intragenic-annotation cds-effect="955_958delACTT" coding="true" end-3p-distance-to-exon-junction="68" end-5p-distance-to-exon-junction="157" end-affected-component-number="8" end-affected-component-type="exon" end-cds-position="958" end-disrupted-aa="404" primary="true" protein-effect="T319fs*1" start-3p-distance-to-exon-junction="72" start-5p-distance-to-exon-junction="153" start-affected-component-number="8" start-affected-component-type="exon" start-cds-position="955" start-disrupted-aa="319">
+        <transcript-functional-tags>
+          <tag>frameshift</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000314" coding="true" gene="PTEN"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.4324" alternate-sequence="C" analytical-only="false" cds-effect="551T&gt;C" chromosome="chr13" depth="2257" equivocal="false" gene="BRCA2" genomic-end="32900670" genomic-start="32900670" germline-status="germline" percent-reads="43.24" position="chr13:32900670" protein-effect="L184P" reference-sequence="T" status="unknown" transcript="NM_000059" tumor-zygosity="heterozygous" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="551T&gt;C" coding="true" end-3p-distance-to-exon-junction="80" end-5p-distance-to-exon-junction="35" end-affected-component-number="7" end-affected-component-type="exon" end-cds-position="551" end-disrupted-aa="184" primary="true" protein-effect="L184P" start-3p-distance-to-exon-junction="81" start-5p-distance-to-exon-junction="34" start-affected-component-number="7" start-affected-component-type="exon" start-cds-position="551" start-disrupted-aa="184">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000059" coding="true" gene="BRCA2"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0104" alternate-sequence="CTACAGCTG" analytical-only="false" cds-effect="3331_3332insTGTACAGC" chromosome="chr17" depth="5287" equivocal="false" gene="ERBB2" genomic-end="37883713" genomic-start="37883713" germline-status="unknown" percent-reads="1.04" position="chr17:37883719" protein-effect="R1111fs*24" reference-sequence="C" status="unknown" transcript="NM_004448" tumor-zygosity="unknown" variant-type="insertion">
+      <short-variant-intragenic-annotation cds-effect="3241_3242insTGTACAGC" coding="true" end-3p-distance-to-exon-junction="81" end-5p-distance-to-exon-junction="172" end-affected-component-number="29" end-affected-component-type="exon" end-cds-position="3242" end-disrupted-aa="1226" primary="false" protein-effect="R1081fs*24" start-3p-distance-to-exon-junction="81" start-5p-distance-to-exon-junction="172" start-affected-component-number="29" start-affected-component-type="exon" start-cds-position="3241" start-disrupted-aa="1081">
+        <transcript-functional-tags>
+          <tag>frameshift</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001005862" coding="true" gene="ERBB2"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="3331_3332insTGTACAGC" coding="true" end-3p-distance-to-exon-junction="81" end-5p-distance-to-exon-junction="172" end-affected-component-number="26" end-affected-component-type="exon" end-cds-position="3332" end-disrupted-aa="1256" primary="true" protein-effect="R1111fs*24" start-3p-distance-to-exon-junction="81" start-5p-distance-to-exon-junction="172" start-affected-component-number="26" start-affected-component-type="exon" start-cds-position="3331" start-disrupted-aa="1111">
+        <transcript-functional-tags>
+          <tag>frameshift</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_004448" coding="true" gene="ERBB2"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0181" alternate-sequence="CGACTTA" analytical-only="false" cds-effect="74_75insAGACTT" chromosome="chr10" depth="3258" equivocal="false" gene="PTEN" genomic-end="89624289" genomic-start="89624289" germline-status="unknown" percent-reads="1.81" position="chr10:89624300" protein-effect="L25_T26insDL" reference-sequence="C" status="unknown" transcript="NM_000314" tumor-zygosity="unknown" variant-type="insertion">
+      <short-variant-intragenic-annotation cds-effect="74_75insAGACTT" coding="true" end-3p-distance-to-exon-junction="5" end-5p-distance-to-exon-junction="1106" end-affected-component-number="1" end-affected-component-type="exon" end-cds-position="75" end-disrupted-aa="26" primary="true" protein-effect="L25_T26insDL" start-3p-distance-to-exon-junction="5" start-5p-distance-to-exon-junction="1106" start-affected-component-number="1" start-affected-component-type="exon" start-cds-position="74" start-disrupted-aa="25">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>nonframeshift</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000314" coding="true" gene="PTEN"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0988" alternate-sequence="A" analytical-only="false" cds-effect="776A&gt;T" chromosome="chr17" depth="3814" equivocal="false" gene="TP53" genomic-end="7577505" genomic-start="7577505" germline-status="unknown" percent-reads="9.88" position="chr17:7577505" protein-effect="D259V" reference-sequence="T" status="known" transcript="NM_000546" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="380A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="3" end-affected-component-type="exon" end-cds-position="380" end-disrupted-aa="127" primary="false" protein-effect="D127V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="3" start-affected-component-type="exon" start-cds-position="380" start-disrupted-aa="127">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126115" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="380A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="3" end-affected-component-type="exon" end-cds-position="380" end-disrupted-aa="127" primary="false" protein-effect="D127V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="3" start-affected-component-type="exon" start-cds-position="380" start-disrupted-aa="127">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126116" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="776A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="7" end-affected-component-type="exon" end-cds-position="776" end-disrupted-aa="259" primary="false" protein-effect="D259V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="7" start-affected-component-type="exon" start-cds-position="776" start-disrupted-aa="259">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126112" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="380A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="3" end-affected-component-type="exon" end-cds-position="380" end-disrupted-aa="127" primary="false" protein-effect="D127V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="3" start-affected-component-type="exon" start-cds-position="380" start-disrupted-aa="127">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126117" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="776A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="7" end-affected-component-type="exon" end-cds-position="776" end-disrupted-aa="259" primary="false" protein-effect="D259V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="7" start-affected-component-type="exon" start-cds-position="776" start-disrupted-aa="259">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126113" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="776A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="7" end-affected-component-type="exon" end-cds-position="776" end-disrupted-aa="259" primary="true" protein-effect="D259V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="7" start-affected-component-type="exon" start-cds-position="776" start-disrupted-aa="259">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000546" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="776A&gt;T" coding="true" end-3p-distance-to-exon-junction="6" end-5p-distance-to-exon-junction="104" end-affected-component-number="7" end-affected-component-type="exon" end-cds-position="776" end-disrupted-aa="259" primary="false" protein-effect="D259V" start-3p-distance-to-exon-junction="7" start-5p-distance-to-exon-junction="103" start-affected-component-number="7" start-affected-component-type="exon" start-cds-position="776" start-disrupted-aa="259">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001126114" coding="true" gene="TP53"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0083" alternate-sequence="A" analytical-only="false" cds-effect="1180G&gt;A" chromosome="chr20" depth="5195" equivocal="false" gene="GNAS" genomic-end="57429500" genomic-start="57429500" germline-status="unknown" percent-reads="0.83" position="chr20:57429500" protein-effect="A394T" reference-sequence="G" status="unknown" transcript="NM_080425" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="*42+13559G&gt;A" coding="false" end-3p-distance-to-exon-junction="41166" end-5p-distance-to-exon-junction="13559" end-affected-component-number="1" end-affected-component-type="intron" end-cds-position="*42" primary="false" protein-effect="none" start-3p-distance-to-exon-junction="41167" start-5p-distance-to-exon-junction="13558" start-affected-component-number="1" start-affected-component-type="intron" start-cds-position="*42">
+        <transcript-functional-tags>
+          <tag>intronic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_016592" coding="true" gene="GNAS"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="1180G&gt;A" coding="true" end-3p-distance-to-exon-junction="888" end-5p-distance-to-exon-junction="1465" end-affected-component-number="1" end-affected-component-type="exon" end-cds-position="1180" end-disrupted-aa="394" primary="true" protein-effect="A394T" start-3p-distance-to-exon-junction="889" start-5p-distance-to-exon-junction="1464" start-affected-component-number="1" start-affected-component-type="exon" start-cds-position="1180" start-disrupted-aa="394">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_080425" coding="true" gene="GNAS"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="993G&gt;A" coding="true" end-3p-distance-to-exon-junction="888" end-5p-distance-to-exon-junction="1465" end-affected-component-number="1" end-affected-component-type="exon" end-cds-position="993" end-disrupted-aa="331" primary="false" protein-effect="G331G" start-3p-distance-to-exon-junction="889" start-5p-distance-to-exon-junction="1464" start-affected-component-number="1" start-affected-component-type="exon" start-cds-position="993" start-disrupted-aa="331">
+        <transcript-functional-tags>
+          <tag>synonymous</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001077490" coding="true" gene="GNAS"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5588" alternate-sequence="C" analytical-only="false" cds-effect="5576_5579delTTAA" chromosome="chr13" depth="3377" equivocal="false" gene="BRCA2" genomic-end="32914069" genomic-start="32914065" germline-status="germline" percent-reads="55.88" position="chr13:32914067" protein-effect="I1859fs*3" reference-sequence="CAATT" status="likely" transcript="NM_000059" tumor-zygosity="heterozygous" variant-type="deletion">
+      <short-variant-intragenic-annotation cds-effect="5576_5579delTTAA" coding="true" end-3p-distance-to-exon-junction="1262" end-5p-distance-to-exon-junction="3670" end-affected-component-number="11" end-affected-component-type="exon" end-cds-position="5579" end-disrupted-aa="3419" primary="true" protein-effect="I1859fs*3" start-3p-distance-to-exon-junction="1266" start-5p-distance-to-exon-junction="3666" start-affected-component-number="11" start-affected-component-type="exon" start-cds-position="5576" start-disrupted-aa="1859">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>frameshift</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000059" coding="true" gene="BRCA2"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0731" alternate-sequence="T" analytical-only="false" cds-effect="1202_1215+74del88" chromosome="chr13" depth="3955" equivocal="false" gene="RB1" genomic-end="48947698" genomic-start="48947610" germline-status="unknown" percent-reads="7.31" position="chr13:48947614" protein-effect="splice site 1202_1215+74del88" reference-sequence="TCTGATTTCCTATTTTAACGTAAGCCATATATGAAACATTATTTATTGTAATATCTTGGCAAAGAAACTTGAAATTAAAAGTTAAAGTA" status="likely" transcript="NM_000321" tumor-zygosity="unknown" variant-type="deletion">
+      <short-variant-intragenic-annotation cds-effect="1202_1215+74del88" coding="true" end-3p-distance-to-exon-junction="3351" end-5p-distance-to-exon-junction="74" end-affected-component-number="12" end-affected-component-type="intron" end-cds-position="1215" primary="true" protein-effect="splice site 1202_1215+74del88" start-3p-distance-to-exon-junction="14" start-5p-distance-to-exon-junction="74" start-affected-component-number="12" start-affected-component-type="exon" start-cds-position="1202">
+        <transcript-functional-tags>
+          <tag>intronic</tag>
+          <tag>exonic</tag>
+          <tag>splice</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000321" coding="true" gene="RB1"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+  </short-variants>
+  <copy-number-alterations/>
+  <rearrangements>
+    <rearrangement allele-fraction="0.0071" analytical-only="false" description="FGFR3(NM_000142)-TACC3(NM_006342) fusion (F9; T16*)" equivocal="false" in-frame="unknown" other-gene="TACC3" percent-reads="0.71" pos1="chr4:1806358" pos2="chr4:1746778" status="known" supporting-read-pairs="28" targeted-gene="FGFR3" type="fusion">
+      <chimeric-junctions genomic-type="duplication" intragenic="false" intron-exon-boundary-uncertainty="false">
+        <chimeric-junction description="5'-FGFR3(x1-9)-3':5'-TACC3(x16*-16)-3'" equivocal="false" in-frame="unknown" in-strand="true" supporting-read-pairs="28">
+          <partner-breakpoint annotation-position="1746778" chromosome="chr4" genomic-disruption-direction="-" uncertainty-range-end="1746778" uncertainty-range-start="1746778">
+            <breakpoint-annotation coding="false" disrupted-component-number="16" disrupted-component-type="exon" intergenic="false" primary="true" transcript-disrupted-end="5p">
+              <transcript-functional-tags>
+                <tag>3prime_utr</tag>
+              </transcript-functional-tags>
+              <transcript accession="NM_006342" coding="true" gene="TACC3"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="1806358" chromosome="chr4" genomic-disruption-direction="+" uncertainty-range-end="1806358" uncertainty-range-start="1806358">
+            <breakpoint-annotation coding="true" disrupted-component-number="9" disrupted-component-type="intron" first-or-last-intact-aa-position="422" first-or-last-intact-cds-position="1266" intergenic="false" primary="true" transcript-disrupted-end="3p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_000142" coding="true" gene="FGFR3"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+    <rearrangement allele-fraction="0.0035" analytical-only="false" description="ERBB2(NM_004448) rearrangement exon 27" equivocal="false" in-frame="unknown" other-gene="PDE6B" percent-reads="0.35" pos1="chr17:37884021" pos2="chr4:650833" status="unknown" supporting-read-pairs="13" targeted-gene="ERBB2" type="rearrangement">
+      <chimeric-junctions genomic-type="translocation" intragenic="false" intron-exon-boundary-uncertainty="false">
+        <chimeric-junction description="5'-ERBB2(x1-27*)-3':3'-PDE6B(x9-1)-5'" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="13">
+          <partner-breakpoint annotation-position="37884021" chromosome="chr17" genomic-disruption-direction="+" uncertainty-range-end="37884021" uncertainty-range-start="37884021">
+            <breakpoint-annotation coding="true" disrupted-component-number="27" disrupted-component-type="exon" first-or-last-intact-aa-position="1164" first-or-last-intact-cds-position="3492" intergenic="false" primary="true" transcript-disrupted-end="3p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_004448" coding="true" gene="ERBB2"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="650833" chromosome="chr4" genomic-disruption-direction="+" uncertainty-range-end="650833" uncertainty-range-start="650833">
+            <breakpoint-annotation coding="true" disrupted-component-number="9" disrupted-component-type="intron" first-or-last-intact-aa-position="419" first-or-last-intact-cds-position="1257" intergenic="false" primary="true" transcript-disrupted-end="3p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_000283" coding="true" gene="PDE6B"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+  </rearrangements>
+</vr:variant-report>
