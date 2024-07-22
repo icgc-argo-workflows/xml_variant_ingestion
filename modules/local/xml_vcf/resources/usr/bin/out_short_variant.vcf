@@ -1,0 +1,29 @@
+##fileformat=VCFv4.3
+##curation-version-id="3600702"
+##disease="OVARY"
+##flowcell-analysis="2000013681"
+##gender="female"
+##human-genome-assembly="hg19"
+##specimen-id="2001205343"
+##study="FACT/bTMB-AMC-PRO-19-1209-CAM"
+##test-request="ORD-0961212-01"
+##test-type="BFAST"
+##name="ORD-0961212-01*US0939362.01"
+##bait-set="CF3"
+##contig=<ID=chr10,length=135534747>
+##contig=<ID=chr13,length=115169878>
+##contig=<ID=chr17,length=81195210>
+##contig=<ID=chr20,length=63025520>
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=SOMATIC-OR-GERMLINE,Type=String,Description="somatic or germline">
+##INFO=<ID=ZYGOSITY,Type=String,Description="sample zygosity">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr10	89624289	.	C	CGACTTA	.	.	DP=3258;AF=0.0181;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown
+chr10	89720798	.	GTACT	G	.	.	DP=1470;AF=0.0660;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown
+chr13	32900670	.	T	C	.	.	DP=2257;AF=0.4324;SOMATIC-OR-GERMLINE=germline;ZYGOSITY=heterozygous
+chr13	32914065	.	CAATT	C	.	.	DP=3377;AF=0.5588;SOMATIC-OR-GERMLINE=germline;ZYGOSITY=heterozygous
+chr13	48947610	.	TCTGATTTCCTATTTTAACGTAAGCCATATATGAAACATTATTTATTGTAATATCTTGGCAAAGAAACTTGAAATTAAAAGTTAAAGTA	T	.	.	DP=3955;AF=0.0731;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown
+chr17	7577505	.	T	A	.	.	DP=3814;AF=0.0988;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown
+chr17	37883713	.	C	CTACAGCTG	.	.	DP=5287;AF=0.0104;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown
+chr20	57429500	.	G	A	.	.	DP=5195;AF=0.0083;SOMATIC-OR-GERMLINE=unknown;ZYGOSITY=unknown

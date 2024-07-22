@@ -1,0 +1,23 @@
+##fileformat=VCFv4.3
+##curation-version-id="3600702"
+##disease="OVARY"
+##flowcell-analysis="2000013681"
+##gender="female"
+##human-genome-assembly="hg19"
+##specimen-id="2001205343"
+##study="FACT/bTMB-AMC-PRO-19-1209-CAM"
+##test-request="ORD-0961212-01"
+##test-type="BFAST"
+##name="ORD-0961212-01*US0939362.01"
+##bait-set="CF3"
+##contig=<ID=chr4,length=191154276>
+##contig=<ID=chr17,length=81195210>
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of mate breakends">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr4	650833	bnd_1	G	G]chr17:37884021]	.	.	SVTYPE=BND;MATEID=bnd_4;DP=13;AF=0.0035
+chr4	1746778	bnd_2	T	]chr4:1806358]T	.	.	SVTYPE=BND;MATEID=bnd_3;DP=28;AF=0.0071
+chr4	1806358	bnd_3	G	G[chr4:1746778[	.	.	SVTYPE=BND;MATEID=bnd_2;DP=28;AF=0.0071
+chr17	37884021	bnd_4	T	T]chr4:650833]	.	.	SVTYPE=BND;MATEID=bnd_1;DP=13;AF=0.0035

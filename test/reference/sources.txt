@@ -1,0 +1,3 @@
+wget https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz
+
+https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/
