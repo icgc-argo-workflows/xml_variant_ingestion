@@ -117,7 +117,7 @@ workflow VARIANTCALL {
     )
     ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_SV.out.versions)
 
-    PAYLOAD_VARIANT_CALL_SV.out.payload_files.subscribe { println("payload output: ${it}") }
+    // PAYLOAD_VARIANT_CALL_SV.out.payload_files.subscribe { println("payload output: ${it}") }
 
     // Upload
     SONG_SCORE_UPLOAD_SV(PAYLOAD_VARIANT_CALL_SV.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]

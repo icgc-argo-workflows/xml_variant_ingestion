@@ -22,7 +22,7 @@ process PREP_META {
 
   script:
     // add and initialize variables here as needed
-    args_skip_duplicate_check = skip_duplicate_check==true ? "--force" : ""
+    def args_skip_duplicate_check = skip_duplicate_check==true ? "--force" : ""
     """
     main.py \
       -x ${experiment_info_tsv} \
