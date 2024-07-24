@@ -26,38 +26,15 @@ import pandas as pd
 from pyfaidx import Fasta
 import argparse
 import re
+from datetime import date
 
-def create_vcf_header(root, chrs, chr_dic):
-    # Extract attributes from variant-report element
-    curation_version_id = root.get('curation-version-id')
-    disease = root.get('disease')
-    flowcell_analysis = root.get('flowcell-analysis')
-    gender = root.get('gender')
-    human_genome_assembly = root.get('human-genome-assembly')
-    specimen_id = root.get('specimen-id')
-    study = root.get('study')
-    test_request = root.get('test-request')
-    test_type = root.get('test-type')
+def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
-    # Extract attributes from sample element (assuming there is only one sample)
-    sample = root.find('.//sample')
-    name = sample.get('name')
-    bait_set = sample.get('bait-set')
-
-    # Construct the headers
     headers = [
-        '##fileformat=VCFv4.3',
-        f'##curation-version-id=\"{curation_version_id}\"',
-        f'##disease="{disease}"',
-        f'##flowcell-analysis="{flowcell_analysis}"',
-        f'##gender="{gender}"',
-        f'##human-genome-assembly="{human_genome_assembly}"',
-        f'##specimen-id="{specimen_id}"',
-        f'##study="{study}"',
-        f'##test-request="{test_request}"',
-        f'##test-type="{test_type}"',
-        f'##name="{name}"',
-        f'##bait-set="{bait_set}"'
+        '##fileformat=VCFv4.2',
+        f'##fileDate={date_str}',
+        f'##source={input_file_name}',
+        '##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz'
     ]
 
     # Remove duplicates while preserving order
@@ -182,6 +159,7 @@ def main():
     reference_file_name = args.reference
     reference_file_name2 = args.reference2
     output_file_name = args.output
+    date_str = date.today().strftime("%Y%m%d")
 
     # Parse the XML file
     tree = ET.parse(input_file_name)
@@ -270,7 +248,7 @@ def main():
     sorted_df,chrs = chr_pos_sort(result.copy(), chr_ordered)
 
     # Create VCF headers
-    vcf_headers = create_vcf_header(root, chrs, chr_dic)
+    vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
 
     # Write headers and data to VCF file
     with open(output_file_name, 'w') as f:

@@ -1,5 +1,5 @@
 process PAYLOAD_VARIANT_CALL {
-    // tag "$meta.id"
+    tag "$meta.id"
     label 'process_single'
 
     conda "bioconda::multiqc=1.13"

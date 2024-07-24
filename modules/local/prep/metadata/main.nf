@@ -1,4 +1,4 @@
-process sanityCheck {
+process PREP_META {
     // tag "$meta.id"
     label 'process_single'
 

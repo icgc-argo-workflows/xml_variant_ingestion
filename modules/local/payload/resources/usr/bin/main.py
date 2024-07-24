@@ -73,13 +73,13 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     else:
         sys.exit('Error: unknown variant type: %s' % f)
 
-    new_name = "%s.%s.%s.%s.%s.%s.%s" % (
+    new_name = "%s.%s.%s.%s.%s.somatic.germline.%s.%s" % (
         payload['studyId'],
         seq_experiment_analysis_dict['donor_id'],
         seq_experiment_analysis_dict['sample_id'],
         experimental_strategy,
-        variant_type,
         date_str,
+        variant_type,
         file_ext
     )
 
@@ -105,7 +105,7 @@ def get_files_info(file_to_upload,pipeline_info):
         'dataType': 'Raw Variant Calls' if file_to_upload.split(".")[-2] == 'vcf' else 'VCF Index',
         'info': {
             'data_category': 'Simple Nucleotide Variation' if file_to_upload.split(".")[-4] == 'snv' or file_to_upload.split(".")[-5] == 'snv' else 'Rearrangement Variation',
-            'analysis_tools': [{key.split(":")[-1]:pipeline_info[key]} for key in pipeline_info.keys()] # to work on it later
+            'analysis_tools': [{key.split(":")[-1]:pipeline_info[key]} for key in pipeline_info.keys()]
             }
     }
 
@@ -148,23 +148,23 @@ def main(args):
             }
         ],
         'analysisType': { 'name': 'variant_calling' },
-        'variant_calling_strategy': 'Tumour Only', # need further confirm
+        'variant_calling_strategy': seq_experiment_analysis_dict.get('variant_calling_strategy'),
         'workflow': {
             'genome_build': 'GRCh38',
-            'workflow_name': 'FoundationOneCDx',
-            'workflow_version': '1',
-            'workflow_short_name': 'F1CDx'
+            'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
+            'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
+            'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name')
         },
         'experiment' : {
-            'submitter_sequencing_experiment_id': seq_experiment_analysis_dict.get('submitter_sequencing_experiment_id') or "something",
+            'submitter_sequencing_experiment_id': seq_experiment_analysis_dict.get('submitter_sequencing_experiment_id'),
             'platform' : seq_experiment_analysis_dict.get('platform'),
-            'experimental_strategy': 'Targeted-Seq',
+            'experimental_strategy': seq_experiment_analysis_dict.get('experimental_strategy'),
             'target_capture_kit': seq_experiment_analysis_dict.get('target_capture_kit'),
             'primary_target_regions': seq_experiment_analysis_dict.get('primary_target_regions'),
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
-            'coverage': ['Coding Exons','Introns','Promoters']
+            'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : 'Somatic',  # need further confirm
+        'variant_class' : "Somatic",  # update it after schema update
         'files': []
     }
 
