@@ -4,7 +4,6 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { DOWNLOAD_REF } from '../modules/local/download_ref/main'
 include { XML_VCF } from '../modules/local/xml_vcf/main'
 include { PICARD_LIFTOVERVCF as  PICARD_LIFTOVERVCF_SV } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_RA } from '../modules/nf-core/picard/liftovervcf/main'
@@ -29,19 +28,9 @@ workflow VARIANTCALL {
 
     ch_versions = Channel.empty()
 
-    // Download Reference fasta, fai, liftover_chain files
-    // DOWNLOAD_REF (
-    //     params.fasta_url,
-    //     params.fasta_checksum,
-    //     params.fai_url,
-    //     params.fai_checksum,
-    //     params.chain_url,
-    //     params.chain_checksum
-    // )
-
     // Prepare metadata, adapted from SanityCheck
     PREP_META(
-        file(params.experiment_info_tsv),
+        file(params.experiment_info_tsv, checkIfExists: true),
         params.api_token,
         params.song_url,
         params.clinical_url,
@@ -53,7 +42,7 @@ workflow VARIANTCALL {
     .collectFile(keepHeader: true, name: 'updated_sample.tsv')
     .splitCsv(header: true, sep: '\t')
     .map { row ->
-         [
+        [
             study_id: row.program_id,
             id: row.sample_id,
             donor_id: row.donor_id,
@@ -71,19 +60,19 @@ workflow VARIANTCALL {
 
     XML_VCF (
         xml_ch,
-        Channel.fromPath(params.hg19_ref_fa),
-        Channel.fromPath(params.hg19_ref_fai)
+        Channel.fromPath(params.hg19_ref_fa, checkIfExists: true),
+        Channel.fromPath(params.hg19_ref_fai, checkIfExists: true)
     )
     ch_versions = ch_versions.mix(XML_VCF.out.versions)
 
     // VCF lift over
-    hg38_ref_ch = Channel.fromPath(params.hg38_ref_fa)
+    hg38_ref_ch = Channel.fromPath(params.hg38_ref_fa, checkIfExists: true)
                             .map{ path -> [ [id: 'fasta'], path ] }
 
-    hg38_ref_dict = Channel.fromPath(params.hg38_ref_dict)
+    hg38_ref_dict = Channel.fromPath(params.hg38_ref_dict, checkIfExists: true)
                             .map{ path -> [ [id: 'dict'], path ] }
 
-    hg19_to_hg38_chain_ch = Channel.fromPath(params.hg19_to_hg38_chain)
+    hg19_to_hg38_chain_ch = Channel.fromPath(params.hg19_to_hg38_chain, checkIfExists: true)
                             .map{ path -> [ [id: 'chain'], path ] }
 
     // Short Vraint \\

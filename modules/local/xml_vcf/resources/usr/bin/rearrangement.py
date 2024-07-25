@@ -67,8 +67,8 @@ def custom_sort_key(item):
 
 # extract ref nucletide
 def extract_nucleotide(fasta_file, pos):
-    fasta = Fasta(fasta_file)
-    sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-1].seq
+    fasta = Fasta(fasta_file, as_raw=True)
+    sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-1]
     fasta.close()
     return sequence
 
@@ -187,7 +187,7 @@ def main():
 
         ref[rearrangement.get('pos1')] = extract_nucleotide(fasta_file, rearrangement.get('pos1'))
         ref[rearrangement.get('pos2')] = extract_nucleotide(fasta_file, rearrangement.get('pos2'))
-        print(rearrangement.get('pos1'), ref[rearrangement.get('pos1')])
+        # print(rearrangement.get('pos1'), ref[rearrangement.get('pos1')])
         # Check if there are any "short-variant-intragenic-annotation" elements
 
         partner_breakpoints = rearrangement.findall('.//partner-breakpoint')

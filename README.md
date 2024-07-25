@@ -26,5 +26,13 @@ XML file: `test/data/example.xml`
 2. Retrive `api_token`
 3. Workflow command
 ```bash
-nextflow run main.nf -profile docker,test,rdpc_qa --api_token $api_token
+nextflow run main.nf \
+    -profile docker,test,rdpc_qa \
+    --api_token NNNNNNN \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
 ```
