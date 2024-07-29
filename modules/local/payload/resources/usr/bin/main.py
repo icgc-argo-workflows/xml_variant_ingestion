@@ -73,7 +73,7 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     else:
         sys.exit('Error: unknown variant type: %s' % f)
 
-    new_name = "%s.%s.%s.%s.%s.somatic.germline.%s.%s" % (
+    new_name = "%s.%s.%s.%s.%s.somatic-germline.%s.%s" % (
         payload['studyId'],
         seq_experiment_analysis_dict['donor_id'],
         seq_experiment_analysis_dict['sample_id'],
