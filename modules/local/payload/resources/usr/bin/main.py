@@ -95,7 +95,7 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     return dst
 
 
-def get_files_info(file_to_upload,pipeline_info):
+def get_files_info(file_to_upload):
     return {
         'fileName': os.path.basename(file_to_upload),
         'fileType': 'VCF' if file_to_upload.split(".")[-2] == 'vcf' else 'TBI',
@@ -104,8 +104,7 @@ def get_files_info(file_to_upload,pipeline_info):
         'fileAccess': 'controlled',
         'dataType': 'Raw Variant Calls' if file_to_upload.split(".")[-2] == 'vcf' else 'VCF Index',
         'info': {
-            'data_category': 'Simple Nucleotide Variation' if file_to_upload.split(".")[-4] == 'snv' or file_to_upload.split(".")[-5] == 'snv' else 'Rearrangement Variation',
-            'analysis_tools': [{key.split(":")[-1]:pipeline_info[key]} for key in pipeline_info.keys()]
+            'data_category': 'Simple Nucleotide Variation' if file_to_upload.split(".")[-3] == 'snv' or file_to_upload.split(".")[-4] == 'snv' else 'Rearrangement Variation'
             }
     }
 
@@ -116,17 +115,24 @@ def main(args):
             seq_experiment_analysis_dict = row
 
     pipeline_info = {}
+    updated_pipeline_info = {}
     if args.pipeline_yml:
       with open(args.pipeline_yml, 'r') as f:
         pipeline_info = yaml.safe_load(f)
+        for tool, version in pipeline_info.items():
+            # tool are like NFCORE_VARIANTCALL:VARIANTCALL:PICARD_LIFTOVERVCF_RA, NFCORE_VARIANTCALL:VARIANTCALL:XML_VCF
+            new_tool_parts = tool.split(":")[-1].split("_")
+            # Join the first two parts if there are multiple parts
+            new_tool = "_".join(new_tool_parts[:2]) if len(new_tool_parts) > 1 else new_tool_parts[0]
+            updated_pipeline_info[new_tool]=version
 
     tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
-    pipeline_info['FoundationOneCDx'] = tools_dict
+    updated_pipeline_info['FoundationOneCDx'] = tools_dict
 
-    for key, value in pipeline_info.items():
+    for key, value in updated_pipeline_info.items():
         for sub_key, sub_value in value.items():
             value[sub_key] = str(sub_value)
-        pipeline_info[key] = value
+        updated_pipeline_info[key] = value
 
     payload = {
         'studyId': seq_experiment_analysis_dict.get('program_id'),
@@ -153,7 +159,8 @@ def main(args):
             'genome_build': 'GRCh38',
             'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
             'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
-            'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name')
+            'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),
+            'pipeline_info': updated_pipeline_info
         },
         'experiment' : {
             'submitter_sequencing_experiment_id': seq_experiment_analysis_dict.get('submitter_sequencing_experiment_id'),
@@ -164,7 +171,7 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "Somatic",  # update it after schema update
+        'variant_class' : "Somatic",  # update to "Somatic/Germline" after schema update
         'files': []
     }
 
@@ -172,7 +179,7 @@ def main(args):
     date_str = date.today().strftime("%Y%m%d")
     for f in args.files_to_upload:
         renamed_file = rename_file(f, payload, seq_experiment_analysis_dict, date_str)
-        payload['files'].append(get_files_info(renamed_file,pipeline_info))
+        payload['files'].append(get_files_info(renamed_file))
 
     with open("%s.variant_call.payload.json" % str(uuid.uuid4()), 'w') as f:
         f.write(json.dumps(payload, indent=2))
