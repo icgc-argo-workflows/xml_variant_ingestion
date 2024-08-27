@@ -116,7 +116,7 @@ def process_dataframe(df, chr_list):
     df['ID'] = '.'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
-    df['INFO'] = 'DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str) + ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'] + ';ZYGOSITY=' + df['ZYGOSITY']
+    df['INFO'] = 'DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str) + ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'].fillna('NA') + ';ZYGOSITY=' + df['ZYGOSITY'].fillna('NA')
     df.drop(['DP', 'AF'], axis=1, inplace=True)
     df['POS'] = df['POS'].astype(int)
     desired_order = ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']

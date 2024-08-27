@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--downconverted from variant report schema version 2-->
+<vr:variant-report xmlns:vr="http://foundationmedicine.com/compbio/variant-report" curation-version-id="3960153" disease="PROSTATE" flowcell-analysis="2000033111" gender="male" human-genome-assembly="hg19" specimen-id="2003335555" study="FoundationOneLiquidDx-AMC-PRO-20-2344" test-request="ORD-0000003-01" test-type="FoundationOneLiquidDx">
+    <samples>
+         <sample name="ORD-0000003-01*US1055555.01" bait-set="AB1"/>
+    </samples>
+  <pertinent-genes/>
+  <aggregate-features/>
+  <short-variants>
+    <short-variant allele-fraction="0.0068" alternate-sequence="C" analytical-only="false" cds-effect="4084A&gt;G" chromosome="chr3" depth="1471" equivocal="false" gene="MST1R" genomic-end="49924859" genomic-start="49924859" germline-status="unknown" percent-reads="0.68" position="chr3:49924859" protein-effect="N1362D" reference-sequence="T" status="unknown" subclonal="false" transcript="NM_002447" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="4084A&gt;G" coding="true" end-3p-distance-to-exon-junction="423" end-5p-distance-to-exon-junction="137" end-affected-component-number="20" end-affected-component-type="exon" end-cds-position="4084" end-disrupted-aa="1362" primary="true" protein-effect="N1362D" start-3p-distance-to-exon-junction="424" start-5p-distance-to-exon-junction="136" start-affected-component-number="20" start-affected-component-type="exon" start-cds-position="4084" start-disrupted-aa="1362">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_002447" coding="true" gene="MST1R"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0072" alternate-sequence="T" analytical-only="false" cds-effect="4210C&gt;T" chromosome="chr4" depth="838" equivocal="false" gene="TET2" genomic-end="106193748" genomic-start="106193748" germline-status="somatic" percent-reads="0.72" position="chr4:106193748" protein-effect="R1404*" reference-sequence="C" status="likely" subclonal="false" transcript="NM_001127208" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="4210C&gt;T" coding="true" end-3p-distance-to-exon-junction="327" end-5p-distance-to-exon-junction="28" end-affected-component-number="10" end-affected-component-type="exon" end-cds-position="4210" end-disrupted-aa="1404" primary="true" protein-effect="R1404*" start-3p-distance-to-exon-junction="328" start-5p-distance-to-exon-junction="27" start-affected-component-number="10" start-affected-component-type="exon" start-cds-position="4210" start-disrupted-aa="1404">
+        <transcript-functional-tags>
+          <tag>nonsense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001127208" coding="true" gene="TET2"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0070" alternate-sequence="A" analytical-only="false" cds-effect="2347A&gt;T" chromosome="chr2" depth="1427" equivocal="false" gene="DNMT3A" genomic-end="25462060" genomic-start="25462060" germline-status="unknown" percent-reads="0.70" position="chr2:25462060" protein-effect="K783*" reference-sequence="T" status="likely" subclonal="false" transcript="NM_022552" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="2347A&gt;T" coding="true" end-3p-distance-to-exon-junction="61" end-5p-distance-to-exon-junction="25" end-affected-component-number="20" end-affected-component-type="exon" end-cds-position="2347" end-disrupted-aa="783" primary="false" protein-effect="K783*" start-3p-distance-to-exon-junction="62" start-5p-distance-to-exon-junction="24" start-affected-component-number="20" start-affected-component-type="exon" start-cds-position="2347" start-disrupted-aa="783">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>nonsense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_175629" coding="true" gene="DNMT3A"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="1780A&gt;T" coding="true" end-3p-distance-to-exon-junction="61" end-5p-distance-to-exon-junction="25" end-affected-component-number="16" end-affected-component-type="exon" end-cds-position="1780" end-disrupted-aa="594" primary="false" protein-effect="K594*" start-3p-distance-to-exon-junction="62" start-5p-distance-to-exon-junction="24" start-affected-component-number="16" start-affected-component-type="exon" start-cds-position="1780" start-disrupted-aa="594">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>nonsense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_153759" coding="true" gene="DNMT3A"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="2347A&gt;T" coding="true" end-3p-distance-to-exon-junction="61" end-5p-distance-to-exon-junction="25" end-affected-component-number="20" end-affected-component-type="exon" end-cds-position="2347" end-disrupted-aa="783" primary="true" protein-effect="K783*" start-3p-distance-to-exon-junction="62" start-5p-distance-to-exon-junction="24" start-affected-component-number="20" start-affected-component-type="exon" start-cds-position="2347" start-disrupted-aa="783">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>nonsense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_022552" coding="true" gene="DNMT3A"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5085" alternate-sequence="T" analytical-only="false" cds-effect="1220C&gt;T" chromosome="chr2" depth="702" equivocal="false" gene="PDK1" genomic-end="173460606" genomic-start="173460606" germline-status="germline" percent-reads="50.85" position="chr2:173460606" protein-effect="A407V" reference-sequence="C" status="unknown" transcript="NM_002610" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="1220C&gt;T" coding="true" end-3p-distance-to-exon-junction="3256" end-5p-distance-to-exon-junction="50" end-affected-component-number="11" end-affected-component-type="exon" end-cds-position="1220" end-disrupted-aa="407" primary="true" protein-effect="A407V" start-3p-distance-to-exon-junction="3257" start-5p-distance-to-exon-junction="49" start-affected-component-number="11" start-affected-component-type="exon" start-cds-position="1220" start-disrupted-aa="407">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_002610" coding="true" gene="PDK1"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.4708" alternate-sequence="A" analytical-only="false" cds-effect="119G&gt;A" chromosome="chr17" depth="308" equivocal="false" gene="C17orf39" genomic-end="17942897" genomic-start="17942897" germline-status="germline" percent-reads="47.08" position="chr17:17942897" protein-effect="G40D" reference-sequence="G" status="unknown" transcript="NM_024052" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="119G&gt;A" coding="true" end-3p-distance-to-exon-junction="319" end-5p-distance-to-exon-junction="287" end-affected-component-number="1" end-affected-component-type="exon" end-cds-position="119" end-disrupted-aa="40" primary="true" protein-effect="G40D" start-3p-distance-to-exon-junction="320" start-5p-distance-to-exon-junction="286" start-affected-component-number="1" start-affected-component-type="exon" start-cds-position="119" start-disrupted-aa="40">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_024052" coding="true" gene="C17orf39"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5068" alternate-sequence="G" analytical-only="false" cds-effect="2804C&gt;G" chromosome="chr11" depth="2589" equivocal="false" gene="ATM" genomic-end="108139302" genomic-start="108139302" germline-status="germline" percent-reads="50.68" position="chr11:108139302" protein-effect="T935R" reference-sequence="C" status="unknown" transcript="NM_000051" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="2804C&gt;G" coding="true" end-3p-distance-to-exon-junction="34" end-5p-distance-to-exon-junction="166" end-affected-component-number="18" end-affected-component-type="exon" end-cds-position="2804" end-disrupted-aa="935" primary="true" protein-effect="T935R" start-3p-distance-to-exon-junction="35" start-5p-distance-to-exon-junction="165" start-affected-component-number="18" start-affected-component-type="exon" start-cds-position="2804" start-disrupted-aa="935">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000051" coding="true" gene="ATM"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.0206" alternate-sequence="A" analytical-only="false" cds-effect="1080G&gt;T" chromosome="chr11" depth="533" equivocal="false" gene="MRE11A" genomic-end="94200997" genomic-start="94200997" germline-status="somatic" percent-reads="2.06" position="chr11:94200997" protein-effect="K360N" reference-sequence="C" status="unknown" transcript="NM_005590" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="1080G&gt;T" coding="true" end-3p-distance-to-exon-junction="18" end-5p-distance-to-exon-junction="63" end-affected-component-number="10" end-affected-component-type="exon" end-cds-position="1080" end-disrupted-aa="360" primary="false" protein-effect="K360N" start-3p-distance-to-exon-junction="19" start-5p-distance-to-exon-junction="62" start-affected-component-number="10" start-affected-component-type="exon" start-cds-position="1080" start-disrupted-aa="360">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_005591" coding="true" gene="MRE11A"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="1080G&gt;T" coding="true" end-3p-distance-to-exon-junction="18" end-5p-distance-to-exon-junction="63" end-affected-component-number="10" end-affected-component-type="exon" end-cds-position="1080" end-disrupted-aa="360" primary="true" protein-effect="K360N" start-3p-distance-to-exon-junction="19" start-5p-distance-to-exon-junction="62" start-affected-component-number="10" start-affected-component-type="exon" start-cds-position="1080" start-disrupted-aa="360">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_005590" coding="true" gene="MRE11A"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5309" alternate-sequence="G" analytical-only="false" cds-effect="29_40delGCCGCCGTCGCC" chromosome="chr19" depth="729" equivocal="false" gene="NOTCH3" genomic-end="15311688" genomic-start="15311676" germline-status="germline" percent-reads="53.09" position="chr19:15311676" protein-effect="R10_R13del" reference-sequence="GGGCGACGGCGGC" status="unknown" transcript="NM_000435" tumor-zygosity="unknown" variant-type="deletion">
+      <short-variant-intragenic-annotation cds-effect="29_40delGCCGCCGTCGCC" coding="true" end-3p-distance-to-exon-junction="78" end-5p-distance-to-exon-junction="116" end-affected-component-number="1" end-affected-component-type="exon" end-cds-position="40" end-disrupted-aa="13" primary="true" protein-effect="R10_R13del" start-3p-distance-to-exon-junction="90" start-5p-distance-to-exon-junction="104" start-affected-component-number="1" start-affected-component-type="exon" start-cds-position="29" start-disrupted-aa="10">
+        <transcript-functional-tags>
+          <tag>nonframeshift</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_000435" coding="true" gene="NOTCH3"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5061" alternate-sequence="A" analytical-only="false" cds-effect="2060C&gt;T" chromosome="chr7" depth="1308" equivocal="false" gene="CARD11" genomic-end="2962848" genomic-start="2962848" germline-status="germline" percent-reads="50.61" position="chr7:2962848" protein-effect="A687V" reference-sequence="G" status="unknown" transcript="NM_032415" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="2060C&gt;T" coding="true" end-3p-distance-to-exon-junction="82" end-5p-distance-to-exon-junction="120" end-affected-component-number="16" end-affected-component-type="exon" end-cds-position="2060" end-disrupted-aa="687" primary="true" protein-effect="A687V" start-3p-distance-to-exon-junction="83" start-5p-distance-to-exon-junction="119" start-affected-component-number="16" start-affected-component-type="exon" start-cds-position="2060" start-disrupted-aa="687">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_032415" coding="true" gene="CARD11"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.4861" alternate-sequence="G" analytical-only="false" cds-effect="3388A&gt;G" chromosome="chr20" depth="1831" equivocal="false" gene="ASXL1" genomic-end="31023903" genomic-start="31023903" germline-status="germline" percent-reads="48.61" position="chr20:31023903" protein-effect="M1130V" reference-sequence="A" status="unknown" transcript="NM_015338" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="3388A&gt;G" coding="true" end-3p-distance-to-exon-junction="3219" end-5p-distance-to-exon-junction="1669" end-affected-component-number="12" end-affected-component-type="exon" end-cds-position="3388" end-disrupted-aa="1130" primary="true" protein-effect="M1130V" start-3p-distance-to-exon-junction="3220" start-5p-distance-to-exon-junction="1668" start-affected-component-number="12" start-affected-component-type="exon" start-cds-position="3388" start-disrupted-aa="1130">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_015338" coding="true" gene="ASXL1"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+    <short-variant allele-fraction="0.5030" alternate-sequence="C" analytical-only="false" cds-effect="449T&gt;C" chromosome="chr19" depth="1342" equivocal="false" gene="AXL" genomic-end="41727824" genomic-start="41727824" germline-status="germline" percent-reads="50.30" position="chr19:41727824" protein-effect="V150A" reference-sequence="T" status="unknown" transcript="NM_001699" tumor-zygosity="unknown" variant-type="single-nucleotide-substitution">
+      <short-variant-intragenic-annotation cds-effect="449T&gt;C" coding="true" end-3p-distance-to-exon-junction="137" end-5p-distance-to-exon-junction="40" end-affected-component-number="4" end-affected-component-type="exon" end-cds-position="449" end-disrupted-aa="150" primary="true" protein-effect="V150A" start-3p-distance-to-exon-junction="138" start-5p-distance-to-exon-junction="39" start-affected-component-number="4" start-affected-component-type="exon" start-cds-position="449" start-disrupted-aa="150">
+        <transcript-functional-tags>
+          <tag>exonic</tag>
+          <tag>missense</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_001699" coding="true" gene="AXL"/>
+      </short-variant-intragenic-annotation>
+      <short-variant-intragenic-annotation cds-effect="449T&gt;C" coding="true" end-3p-distance-to-exon-junction="137" end-5p-distance-to-exon-junction="40" end-affected-component-number="4" end-affected-component-type="exon" end-cds-position="449" end-disrupted-aa="150" primary="false" protein-effect="V150A" start-3p-distance-to-exon-junction="138" start-5p-distance-to-exon-junction="39" start-affected-component-number="4" start-affected-component-type="exon" start-cds-position="449" start-disrupted-aa="150">
+        <transcript-functional-tags>
+          <tag>missense</tag>
+          <tag>exonic</tag>
+        </transcript-functional-tags>
+        <transcript accession="NM_021913" coding="true" gene="AXL"/>
+      </short-variant-intragenic-annotation>
+    </short-variant>
+  </short-variants>
+  <copy-number-alterations/>
+  <rearrangements/>
+</vr:variant-report>
