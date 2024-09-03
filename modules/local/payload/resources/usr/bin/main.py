@@ -70,6 +70,8 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
         variant_type = 'snv'
     elif 'rearrangement' in f:
         variant_type = 'sv'
+    elif 'copy_number' in f:
+        variant_type = 'cnv'
     else:
         sys.exit('Error: unknown variant type: %s' % f)
 

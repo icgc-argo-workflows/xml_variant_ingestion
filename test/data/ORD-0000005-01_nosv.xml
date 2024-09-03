@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--downconverted from variant report schema version 2-->
+<vr:variant-report xmlns:vr="http://foundationmedicine.com/compbio/variant-report" curation-version-id="4451147" disease="COLON" flowcell-analysis="2000066666" gender="male" human-genome-assembly="hg19" specimen-id="2004444440" study="FoundationOneLiquidDx-AMC-PRO-20-2344" test-request=":ORD-0000005-01" test-type="FoundationOneLiquidDx">
+    <samples>
+         <sample name=":ORD-0000005-01*US1222222.01" bait-set="AB1"/>
+    </samples>
+  <pertinent-genes/>
+  <aggregate-features/>
+  <short-variants>
+  </short-variants>
+  <copy-number-alterations>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="NBN" number-of-exons="16 of 16" position="chr8:90947760-90996835" ratio="1.75" status="unknown" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="IKZF1" number-of-exons="6 of 7" position="chr7:50367228-50468325" ratio="1.74" status="unknown" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="RAD21" number-of-exons="13 of 13" position="chr8:117859738-117878968" ratio="1.88" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="MYC" number-of-exons="5 of 5" position="chr8:128706589-128801451" ratio="1.82" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="FGFR1" number-of-exons="18 of 18" position="chr8:38226104-38363070" ratio="2.00" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="LYN" number-of-exons="12 of 12" position="chr8:56854418-56922669" ratio="1.74" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="EGFR" number-of-exons="30 of 30" position="chr7:55037753-55323228" ratio="1.93" status="known" type="amplification"/>
+  </copy-number-alterations>
+  <rearrangements>
+    <rearrangement allele-fraction="0.0020" analytical-only="false" description="FGFR1(NM_015850) rearrangement exon 3" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="0.20" pos1="chr8:38287444" pos2="chr8:38346492" status="unknown" supporting-read-pairs="22" targeted-gene="FGFR1" type="rearrangement">
+      <chimeric-junctions genomic-type="inversion" intragenic="false" intron-exon-boundary-uncertainty="false">
+        <chimeric-junction description="3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="22">
+          <partner-breakpoint annotation-position="38287444" chromosome="chr8" genomic-disruption-direction="+" uncertainty-range-end="38287444" uncertainty-range-start="38287444">
+            <breakpoint-annotation coding="true" disrupted-component-number="3" disrupted-component-type="exon" first-or-last-intact-aa-position="38" first-or-last-intact-cds-position="114" intergenic="false" primary="true" transcript-disrupted-end="5p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_015850" coding="true" gene="FGFR1"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="38346492" chromosome="chr8" genomic-disruption-direction="+" uncertainty-range-end="38346492" uncertainty-range-start="38346492">
+            <breakpoint-annotation coding="false" distance-to-gene="20140" distance-to-gene-type="upstream" intergenic="true" primary="true">
+              <transcript-functional-tags/>
+              <transcript accession="NM_015850" coding="true" gene="FGFR1"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+    <rearrangement allele-fraction="0.0308" analytical-only="false" description="TSC2(NM_000548) duplication intron 15 - intron 19" equivocal="false" in-frame="Yes" other-gene="TSC2" percent-reads="3.08" pos1="chr16:2122133" pos2="chr16:2114712" status="likely" supporting-read-pairs="14" targeted-gene="TSC2" type="duplication">
+      <chimeric-junctions first-disrupted-exon="16" genomic-type="duplication" intragenic="true" intron-exon-boundary-uncertainty="false" last-disrupted-exon="19">
+        <chimeric-junction description="5'-TSC2(x1-19)-3':5'-TSC2(x16-42)-3'" equivocal="false" in-frame="Yes" in-strand="true" supporting-read-pairs="14">
+          <partner-breakpoint annotation-position="2114712" chromosome="chr16" genomic-disruption-direction="-" uncertainty-range-end="2114712" uncertainty-range-start="2114712">
+            <breakpoint-annotation coding="true" disrupted-component-number="15" disrupted-component-type="intron" first-or-last-intact-aa-position="534" first-or-last-intact-cds-position="1600" intergenic="false" primary="true" transcript-disrupted-end="5p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_000548" coding="true" gene="TSC2"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="2122133" chromosome="chr16" genomic-disruption-direction="+" uncertainty-range-end="2122133" uncertainty-range-start="2122133">
+            <breakpoint-annotation coding="true" disrupted-component-number="19" disrupted-component-type="intron" first-or-last-intact-aa-position="699" first-or-last-intact-cds-position="2097" intergenic="false" primary="true" transcript-disrupted-end="3p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_000548" coding="true" gene="TSC2"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+    <rearrangement allele-fraction="0.0718" analytical-only="false" description="EGFR(NM_005228) rearrangement intron 6" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="7.18" pos1="chr7:55220584" pos2="chr7:53482801" status="unknown" supporting-read-pairs="13" targeted-gene="EGFR" type="rearrangement">
+      <chimeric-junctions genomic-type="duplication" intragenic="false" intron-exon-boundary-uncertainty="false">
+        <chimeric-junction description="5'-EGFR(x1-6)-3':FLJ45974-downstream(240kB)" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="13">
+          <partner-breakpoint annotation-position="55220584" chromosome="chr7" genomic-disruption-direction="+" uncertainty-range-end="55220584" uncertainty-range-start="55220584">
+            <breakpoint-annotation coding="true" disrupted-component-number="6" disrupted-component-type="intron" first-or-last-intact-aa-position="249" first-or-last-intact-cds-position="747" intergenic="false" primary="true" transcript-disrupted-end="3p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_005228" coding="true" gene="EGFR"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="53482801" chromosome="chr7" genomic-disruption-direction="-" uncertainty-range-end="53482801" uncertainty-range-start="53482801">
+            <breakpoint-annotation coding="false" distance-to-gene="240401" distance-to-gene-type="downstream" intergenic="true" primary="true">
+              <transcript-functional-tags/>
+              <transcript accession="NR_038371" coding="false" gene="FLJ45974"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+    <rearrangement allele-fraction="0.2816" analytical-only="false" description="TNFRSF14(NM_003820) rearrangement intron 5" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="28.16" pos1="chr1:2493082" pos2="chr1:2719117" status="likely" supporting-read-pairs="392" targeted-gene="TNFRSF14" type="truncation">
+      <chimeric-junctions genomic-type="inversion" intragenic="false" intron-exon-boundary-uncertainty="false">
+        <chimeric-junction description="3'-TNFRSF14(x8-6)-5':TTC34-upstream(12kB)" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="392">
+          <partner-breakpoint annotation-position="2719117" chromosome="chr1" genomic-disruption-direction="-" uncertainty-range-end="2719117" uncertainty-range-start="2719117">
+            <breakpoint-annotation coding="false" distance-to-gene="12886" distance-to-gene-type="upstream" intergenic="true" primary="true">
+              <transcript-functional-tags/>
+              <transcript accession="NM_001242672" coding="true" gene="TTC34"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+          <partner-breakpoint annotation-position="2493082" chromosome="chr1" genomic-disruption-direction="-" uncertainty-range-end="2493082" uncertainty-range-start="2493082">
+            <breakpoint-annotation coding="true" disrupted-component-number="5" disrupted-component-type="intron" first-or-last-intact-aa-position="184" first-or-last-intact-cds-position="552" intergenic="false" primary="true" transcript-disrupted-end="5p">
+              <transcript-functional-tags/>
+              <transcript accession="NM_003820" coding="true" gene="TNFRSF14"/>
+            </breakpoint-annotation>
+          </partner-breakpoint>
+        </chimeric-junction>
+      </chimeric-junctions>
+    </rearrangement>
+  </rearrangements>
+  <human-leukocyte-antigen/>
+</vr:variant-report>

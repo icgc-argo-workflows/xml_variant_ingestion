@@ -5,13 +5,16 @@
 */
 
 include { XML_VCF } from '../modules/local/xml_vcf/main'
-include { PICARD_LIFTOVERVCF as  PICARD_LIFTOVERVCF_SV } from '../modules/nf-core/picard/liftovervcf/main'
+include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_SV } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_RA } from '../modules/nf-core/picard/liftovervcf/main'
+include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_CN } from '../modules/nf-core/picard/liftovervcf/main'
 include { PREP_META } from '../modules/local/prep/metadata/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_SV } from '../modules/local/payload/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_RA } from '../modules/local/payload/main'
+include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_CN } from '../modules/local/payload/main'
 include { SONG_SCORE_UPLOAD as SONG_SCORE_UPLOAD_SV } from '../subworkflows/icgc-argo-workflows/song_score_upload/main'
 include { SONG_SCORE_UPLOAD as SONG_SCORE_UPLOAD_RA } from '../subworkflows/icgc-argo-workflows/song_score_upload/main'
+include { SONG_SCORE_UPLOAD as SONG_SCORE_UPLOAD_CN } from '../subworkflows/icgc-argo-workflows/song_score_upload/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,6 +149,42 @@ workflow VARIANTCALL {
     // Upload
     SONG_SCORE_UPLOAD_RA(PAYLOAD_VARIANT_CALL_RA.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
     ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_RA.out.versions)
+
+
+    // Copy Number \\
+    // lift over
+    PICARD_LIFTOVERVCF_CN (
+        XML_VCF.out.copy_number_vcf,
+        hg38_ref_dict,
+        hg38_ref_ch,
+        hg19_to_hg38_chain_ch
+    )
+    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
+
+    //Payload Generation
+    PICARD_LIFTOVERVCF_CN.out.vcf_lifted
+    .combine(PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index)
+    .combine(meta_ch)
+    .combine(PREP_META.out.updated_experiment_info_tsv)
+    .map{
+        metaA, vcf, metaB, index, meta, metadata_analysis ->
+        [
+            meta, [vcf, index], metadata_analysis
+        ]
+    }.set{vcf_and_index_cn}
+
+    PAYLOAD_VARIANT_CALL_CN (
+        vcf_and_index_cn,
+        Channel.empty()
+        .mix(XML_VCF.out.versions)
+        .mix(PICARD_LIFTOVERVCF_CN.out.versions)
+        .collectFile(name: 'collated_versions.yml')
+    )
+    ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_CN.out.versions)
+
+    // Upload
+    SONG_SCORE_UPLOAD_CN(PAYLOAD_VARIANT_CALL_CN.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
+    ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_CN.out.versions)
 
     emit:
 

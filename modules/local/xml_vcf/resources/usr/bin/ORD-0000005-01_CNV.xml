@@ -1,0 +1,19 @@
+##fileformat=VCFv4.2
+##fileDate=20240830
+##source=ORD-0000005-01.xml
+##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+##contig=<ID=chr7,length=159138663>
+##contig=<ID=chr8,length=146364022>
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of this structural variant">
+##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">
+##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">
+##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr7	50367228	.	C	<CNV>	.	.	SVTYPE=CNV;END=50468325;TYPE=amplification;CN=9;RATIO=1.74
+chr7	55037753	.	C	<CNV>	.	.	SVTYPE=CNV;END=55323228;TYPE=amplification;CN=9;RATIO=1.93
+chr8	38226104	.	T	<CNV>	.	.	SVTYPE=CNV;END=38363070;TYPE=amplification;CN=9;RATIO=2.00
+chr8	56854418	.	T	<CNV>	.	.	SVTYPE=CNV;END=56922669;TYPE=amplification;CN=9;RATIO=1.74
+chr8	90947760	.	G	<CNV>	.	.	SVTYPE=CNV;END=90996835;TYPE=amplification;CN=9;RATIO=1.75
+chr8	117859738	.	C	<CNV>	.	.	SVTYPE=CNV;END=117878968;TYPE=amplification;CN=9;RATIO=1.88
+chr8	128706589	.	G	<CNV>	.	.	SVTYPE=CNV;END=128801451;TYPE=amplification;CN=9;RATIO=1.82

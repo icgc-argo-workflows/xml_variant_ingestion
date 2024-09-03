@@ -898,6 +898,13 @@
     </short-variant>
   </short-variants>
   <copy-number-alterations>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="NBN" number-of-exons="16 of 16" position="chr8:90947760-90996835" ratio="1.75" status="unknown" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="IKZF1" number-of-exons="6 of 7" position="chr7:50367228-50468325" ratio="1.74" status="unknown" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="RAD21" number-of-exons="13 of 13" position="chr8:117859738-117878968" ratio="1.88" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="MYC" number-of-exons="5 of 5" position="chr8:128706589-128801451" ratio="1.82" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="FGFR1" number-of-exons="18 of 18" position="chr8:38226104-38363070" ratio="2.00" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="LYN" number-of-exons="12 of 12" position="chr8:56854418-56922669" ratio="1.74" status="known" type="amplification"/>
+    <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="EGFR" number-of-exons="30 of 30" position="chr7:55037753-55323228" ratio="1.93" status="known" type="amplification"/>
   </copy-number-alterations>
   <rearrangements>
     <rearrangement allele-fraction="0.0020" analytical-only="false" description="FGFR1(NM_015850) rearrangement exon 3" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="0.20" pos1="chr8:38287444" pos2="chr8:38346492" status="unknown" supporting-read-pairs="22" targeted-gene="FGFR1" type="rearrangement">
