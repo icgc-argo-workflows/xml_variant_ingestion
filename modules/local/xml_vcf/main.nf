@@ -18,6 +18,7 @@ process XML_VCF {
     tuple val(meta), path ("*.short_variant.vcf"), optional:true, emit: short_variant_vcf
     tuple val(meta), path ("*.rearrangement.vcf"), optional:true, emit: rearrangement_vcf
     tuple val(meta), path ("*.copy_number.vcf"), optional:true, emit: copy_number_vcf
+    tuple val(meta), path ("*.copy_number_end.vcf"), optional:true, emit: copy_number_end_vcf
     path "versions.yml", emit: versions
 
     when:
@@ -59,7 +60,8 @@ process XML_VCF {
             -i ${xml} \\
             -r ${hg19_fa} \\
             -r2 ${hg19_fai} \\
-            -o ${prefix}.copy_number.vcf
+            -o ${prefix}.copy_number.vcf \\
+            -o2 ${prefix}.copy_number_end.vcf
     fi
 
     cat <<-END_VERSIONS > versions.yml

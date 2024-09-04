@@ -8,6 +8,7 @@ include { XML_VCF } from '../modules/local/xml_vcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_SV } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_RA } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_CN } from '../modules/nf-core/picard/liftovervcf/main'
+include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_CN_END } from '../modules/nf-core/picard/liftovervcf/main'
 include { PREP_META } from '../modules/local/prep/metadata/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_SV } from '../modules/local/payload/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_RA } from '../modules/local/payload/main'
@@ -155,6 +156,14 @@ workflow VARIANTCALL {
     // lift over
     PICARD_LIFTOVERVCF_CN (
         XML_VCF.out.copy_number_vcf,
+        hg38_ref_dict,
+        hg38_ref_ch,
+        hg19_to_hg38_chain_ch
+    )
+    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
+
+    PICARD_LIFTOVERVCF_CN_END (
+        XML_VCF.out.copy_number_end_vcf,
         hg38_ref_dict,
         hg38_ref_ch,
         hg19_to_hg38_chain_ch

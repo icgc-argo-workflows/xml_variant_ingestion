@@ -1,0 +1,15 @@
+##fileformat=VCFv4.2
+##fileDate=20240904
+##source=../../../../../../test/data/ORD-0000001-01.xml
+##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+##contig=<ID=chr6,length=171115067>
+##contig=<ID=chr17,length=81195210>
+##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of this structural variant">
+##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">
+##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">
+##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr6	106536075	r_1	G	<CNV>	.	.	SVTYPE=CNV;TYPE=amplification;CN=11;RATIO=2.66
+chr17	37618324	r_2	A	<CNV>	.	.	SVTYPE=CNV;TYPE=amplification;CN=24;RATIO=4.99
+chr17	37807689	r_3	T	<CNV>	.	.	SVTYPE=CNV;TYPE=amplification;CN=28;RATIO=5.78
