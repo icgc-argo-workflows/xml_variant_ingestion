@@ -49,7 +49,7 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
     # Add INFO headers
     headers.extend([
         '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">',
-        '##INFO=<ID=END_POS,Number=1,Type=Integer,Description="End position of this structural variant">',
+        '##INFO=<ID=END,Number=1,Type=Integer,Description="End position of this structural variant">',
         '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">',
         '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">',
         '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">'

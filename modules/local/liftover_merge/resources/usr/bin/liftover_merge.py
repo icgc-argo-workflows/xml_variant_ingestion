@@ -47,8 +47,8 @@ def main(main_vcf, end_vcf, output_vcf):
                 # Modify INFO field if ID exists in the dictionary
                 if record_id in id_pos_dict:
                     info_field = fields[7]
-                    # Add or update the 'END_POS' key in the INFO field
-                    info_field = f"END_POS={id_pos_dict[record_id]};{info_field}"
+                    # Add or update the 'END' key in the INFO field
+                    info_field = f"END={id_pos_dict[record_id]};{info_field}"
                     fields[7] = info_field
 
                 # Optionally, reset the ID to '.'
@@ -58,7 +58,7 @@ def main(main_vcf, end_vcf, output_vcf):
                 vcf_out.write('\t'.join(fields) + '\n')
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Modify VCF files by adding END_POS field.")
+    parser = argparse.ArgumentParser(description="Modify VCF files by adding END field.")
     parser.add_argument('-i', '--input', type=str, required=True, help="Path to the main input VCF file (gzipped).")
     parser.add_argument('-i2', '--input2', type=str, required=True, help="Path to the end VCF file (gzipped).")
     parser.add_argument('-o', '--output', type=str, required=True, help="Path to the output VCF file (gzipped).")
