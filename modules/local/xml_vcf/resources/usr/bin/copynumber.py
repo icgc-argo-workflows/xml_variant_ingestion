@@ -31,7 +31,7 @@ from pyfaidx import Fasta
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     headers = [
-        '##fileformat=VCFv4.2',
+        '##fileformat=VCFv4.3',
         f'##fileDate={date_str}',
         f'##source={input_file_name}',
         '##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz'
@@ -48,11 +48,11 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     # Add INFO headers
     headers.extend([
-        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of Structural Variant">',
-        '##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Length of Structural Variant">',
-        '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of Copy Number Alteration">',
-        '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy Number">',
-        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy Number Ratio">'
+        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">',
+        '##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Difference in length between REF and ALT alleles">',
+        '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">',
+        '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">',
+        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">'
     ])
 
     return headers

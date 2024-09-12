@@ -30,7 +30,7 @@ from datetime import date
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     headers = [
-        '##fileformat=VCFv4.2',
+        '##fileformat=VCFv4.3',
         f'##fileDate={date_str}',
         f'##source={input_file_name}',
         '##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz'
@@ -47,10 +47,10 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     # Add INFO headers
     headers.extend([
-        '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">',
-        '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
-        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="somatic or germline">',
-        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="sample zygosity">'
+        '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total depth">',
+        '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele frequency">',
+        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or germline">',
+        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample zygosity">'
     ])
 
     return headers
