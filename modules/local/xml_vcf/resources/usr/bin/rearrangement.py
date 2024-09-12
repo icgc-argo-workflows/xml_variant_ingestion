@@ -73,7 +73,7 @@ def extract_nucleotide(fasta_file, pos):
     fasta = Fasta(fasta_file, as_raw=True)
     sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-1]
     fasta.close()
-    return sequence
+    return sequence.upper()
 
 # create alt
 def alternative(pos1, pos2):
