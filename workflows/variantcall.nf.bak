@@ -165,37 +165,36 @@ workflow VARIANTCALL {
     )
     ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
 
-    // PICARD_LIFTOVERVCF_CN_END (
-    //     XML_VCF.out.copy_number_end_vcf,
-    //     hg38_ref_dict,
-    //     hg38_ref_ch,
-    //     hg19_to_hg38_chain_ch
-    // )
-    // ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
+    PICARD_LIFTOVERVCF_CN_END (
+        XML_VCF.out.copy_number_end_vcf,
+        hg38_ref_dict,
+        hg38_ref_ch,
+        hg19_to_hg38_chain_ch
+    )
+    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
 
-    // // lift over merge
-    // LIFTOVER_MERGE (
-    //     PICARD_LIFTOVERVCF_CN.out.vcf_lifted,
-    //     PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index,
-    //     PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted,
-    //     PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted_index
-    // )
-    // ch_versions = ch_versions.mix(LIFTOVER_MERGE.out.versions)
+    // lift over merge
+    LIFTOVER_MERGE (
+        PICARD_LIFTOVERVCF_CN.out.vcf_lifted,
+        PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index,
+        PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted,
+        PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted_index
+    )
+    ch_versions = ch_versions.mix(LIFTOVER_MERGE.out.versions)
 
 
-    // // compress and index vcf file
-    // TABIX_BGZIPTABIX (
-    //     LIFTOVER_MERGE.out.vcf_lifted
-    // )
-    // ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
+    // compress and index vcf file
+    TABIX_BGZIPTABIX (
+        LIFTOVER_MERGE.out.vcf_lifted
+    )
+    ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
     //Payload Generation
-    PICARD_LIFTOVERVCF_CN.out.vcf_lifted
-    .combine(PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index)
+    TABIX_BGZIPTABIX.out.gz_tbi
     .combine(meta_ch)
     .combine(PREP_META.out.updated_experiment_info_tsv)
     .map{
-        metaA, vcf, metaB, index, meta, metadata_analysis ->
+        metaA, vcf, index, meta, metadata_analysis ->
         [
             meta, [vcf, index], metadata_analysis
         ]

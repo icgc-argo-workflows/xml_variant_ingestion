@@ -48,11 +48,11 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     # Add INFO headers
     headers.extend([
-        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of Structural Variant">',
-        '##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Length of Structural Variant">',
-        '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of Copy Number Alteration">',
-        '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy Number">',
-        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy Number Ratio">'
+        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">',
+        '##INFO=<ID=END,Number=1,Type=Integer,Description="End position of this structural variant">',
+        '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">',
+        '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">',
+        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">'
     ])
 
     return headers
@@ -91,33 +91,26 @@ def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it
 
     return chr_order
 
-# extract ref nucleotide
+# extract ref nucletide
 def extract_nucleotide(fasta_file, pos):
     fasta = Fasta(fasta_file, as_raw=True)
-    sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-2].upper() # extract the position before this position's nucleotide, so -2
+    sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-1].upper()
     fasta.close()
     return sequence
-
-# Function to calculate the interval length
-def calculate_length(position):
-    # Split the position to get start and end as integers
-    chrom, positions = position.split(':')
-    start, end = map(int, positions.split('-'))
-    return end - start + 1
 
 # Process dataframe by adding "ID", "QUAL", "FILTER" with default value "." and "INFO" with "DP=#;AF=#"
 # where DP means depth and AF means allele frequency
 def process_dataframe(df, chr_list, fasta_file):
 
     df['#CHROM'] = df['position'].apply(lambda x: x.split(':')[0])
-    df['POS'] = df['position'].apply(lambda x: x.split(':')[1].split('-')[0]).astype(int) - 1
+    df['POS'] = df['position'].apply(lambda x: x.split(':')[1].split('-')[0]).astype(int)
     df['ID'] = '.'
     df['ref_pos'] = df['position'].apply(lambda x: x.split('-')[0])
     df['REF'] = df['ref_pos'].apply(lambda x: extract_nucleotide(fasta_file, x))
     df['ALT'] = '<CNV>'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
-    df['INFO'] = 'SVTYPE=CNV;SVLEN=' + df['position'].apply(lambda x: str(calculate_length(x))) + ';TYPE=' + df['type'] + ';CN=' + df['copy-number'] + ';RATIO=' + df['ratio']
+    df['INFO'] = 'SVTYPE=CNV;END=' + df['position'].apply(lambda x: x.split('-')[1]) + ';TYPE=' + df['type'] + ';CN=' + df['copy-number'] + ';RATIO=' + df['ratio']
     extract_df = df[['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']]
 
     sorted_df = chr_pos_sort(extract_df.copy(), chr_list)
@@ -155,8 +148,8 @@ def main():
     # Add output file argument
     parser.add_argument('-o', '--output', type=str, required=True, help="Output file name")
 
-    # # Add output file argument
-    # parser.add_argument('-o2', '--output2', type=str, required=True, help="Output file name for end of CNV")
+    # Add output file argument
+    parser.add_argument('-o2', '--output2', type=str, required=True, help="Output file name for end of CNV")
 
     # Parse the arguments
     args = parser.parse_args()
@@ -166,7 +159,7 @@ def main():
     reference_file_name = args.reference
     reference_file_name2 = args.reference2
     output_file_name = args.output
-    # output_file_end_name = args.output2
+    output_file_end_name = args.output2
     date_str = date.today().strftime("%Y%m%d")
 
     chr_dic = {}
@@ -186,7 +179,6 @@ def main():
         cna_data = extract_data_from_cna(cna)
         data.append(cna_data)
     df = pd.DataFrame(data)
-    print(df)
 
     # Get chromosome order information
     chr_ordered = chr_pos_order(list(chr_dic))
@@ -194,26 +186,26 @@ def main():
     # Process the DataFrame
     df_processed,chrs = process_dataframe(df, chr_ordered, reference_file_name)
 
-    # # Generate sequential IDs which will be used later to match the CNV record with END position
-    # df_processed['ID'] = [f'r_{i+1}' for i in range(len(df_processed))]
-    # # print(df_processed)
+    # Generate sequential IDs which will be used later to match the CNV record with END position
+    df_processed['ID'] = [f'r_{i+1}' for i in range(len(df_processed))]
+    # print(df_processed)
 
-    # # used to generate END vcf
-    # df_end = df_processed.copy()
+    # used to generate END vcf
+    df_end = df_processed.copy()
 
-    # # Apply lambda function to remove END=... part for the output vcf
-    # df_processed['INFO'] = df_processed['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
+    # Apply lambda function to remove END=... part for the output vcf
+    df_processed['INFO'] = df_processed['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
 
-    # # Extract the END values and update POS column for the END vcf
-    # df_end['POS'] = df_end['INFO'].apply(lambda x: re.search(r'END=([0-9]+);', x).group(1) if re.search(r'END=([0-9]+);', x) else df_end['POS'])
+    # Extract the END values and update POS column for the END vcf
+    df_end['POS'] = df_end['INFO'].apply(lambda x: re.search(r'END=([0-9]+);', x).group(1) if re.search(r'END=([0-9]+);', x) else df_end['POS'])
 
-    # # Remove END=... from INFO column for END vcf
-    # df_end['INFO'] = df_end['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
+    # Remove END=... from INFO column for END vcf
+    df_end['INFO'] = df_end['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
 
-    # # Update Ref with the chr and pos using hg19 for END vcf
-    # df_end['CHROM_POS'] = df_end.apply(lambda row: f"{row['#CHROM']}:{row['POS']}", axis=1)
-    # df_end['REF'] = df_end['CHROM_POS'].apply(lambda x: extract_nucleotide(reference_file_name, x))
-    # df_end.drop(columns=['CHROM_POS'], inplace=True)
+    # Update Ref with the chr and pos using hg19 for END vcf
+    df_end['CHROM_POS'] = df_end.apply(lambda row: f"{row['#CHROM']}:{row['POS']}", axis=1)
+    df_end['REF'] = df_end['CHROM_POS'].apply(lambda x: extract_nucleotide(reference_file_name, x))
+    df_end.drop(columns=['CHROM_POS'], inplace=True)
 
     # Create VCF headers
     vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
@@ -224,11 +216,11 @@ def main():
             f.write(f"{header_line}\n")
         df_processed.to_csv(f, sep='\t', index=False)
 
-    # # Write headers and data to VCF file
-    # with open(output_file_end_name, 'w') as f:
-    #     for header_line in vcf_headers:
-    #         f.write(f"{header_line}\n")
-    #     df_end.to_csv(f, sep='\t', index=False)
+    # Write headers and data to VCF file
+    with open(output_file_end_name, 'w') as f:
+        for header_line in vcf_headers:
+            f.write(f"{header_line}\n")
+        df_end.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()
