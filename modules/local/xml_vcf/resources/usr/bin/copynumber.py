@@ -52,7 +52,10 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
         '##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Difference in length between REF and ALT alleles">',
         '##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of copy number alteration">',
         '##INFO=<ID=CN,Number=1,Type=Integer,Description="Copy number">',
-        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">'
+        '##INFO=<ID=RATIO,Number=1,Type=Float,Description="Copy number ratio">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical only">'
     ])
 
     return headers
@@ -63,7 +66,10 @@ def extract_data_from_cna(cna):
         'copy-number': cna.get('copy-number'),
         'position': cna.get('position'),
         'ratio': cna.get('ratio'),
-        'type': cna.get('type')
+        'type': cna.get('type'),
+        'status': cna.get('status'),
+        'equivocal': cna.get('equivocal'),
+        'analytical-only': cna.get('analytical-only')
     }
 
 def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it sort chr based on "chr1, chr2, chrX, chrY, chrUn_, chrM"
@@ -117,7 +123,14 @@ def process_dataframe(df, chr_list, fasta_file):
     df['ALT'] = '<CNV>'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
-    df['INFO'] = 'SVTYPE=CNV;SVLEN=' + df['position'].apply(lambda x: str(calculate_length(x))) + ';TYPE=' + df['type'] + ';CN=' + df['copy-number'] + ';RATIO=' + df['ratio']
+    df['INFO'] = 'SVTYPE=CNV;SVLEN=' + df['position'].apply(lambda x: str(calculate_length(x))) + \
+                    ';TYPE=' + df['type'] + \
+                    ';CN=' + df['copy-number'] + \
+                    ';RATIO=' + df['ratio'] + \
+                    ';STATUS=' + df['status'] + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
+
     extract_df = df[['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']]
 
     sorted_df = chr_pos_sort(extract_df.copy(), chr_list)

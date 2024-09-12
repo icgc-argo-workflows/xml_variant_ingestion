@@ -907,7 +907,7 @@
     <copy-number-alteration analytical-only="false" copy-number="9" equivocal="false" gene="EGFR" number-of-exons="30 of 30" position="chr7:55037753-55323228" ratio="1.93" status="known" type="amplification"/>
   </copy-number-alterations>
   <rearrangements>
-    <rearrangement allele-fraction="0.0020" analytical-only="false" description="FGFR1(NM_015850) rearrangement exon 3" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="0.20" pos1="chr8:38287444" pos2="chr8:38346492" status="unknown" supporting-read-pairs="22" targeted-gene="FGFR1" type="rearrangement">
+    <rearrangement allele-fraction="0.0020" analytical-only="true" description="FGFR1(NM_015850) rearrangement exon 3" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="0.20" pos1="chr8:38287444" pos2="chr8:38346492" status="unknown" supporting-read-pairs="22" targeted-gene="FGFR1" type="rearrangement">
       <chimeric-junctions genomic-type="inversion" intragenic="false" intron-exon-boundary-uncertainty="false">
         <chimeric-junction description="3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="22">
           <partner-breakpoint annotation-position="38287444" chromosome="chr8" genomic-disruption-direction="+" uncertainty-range-end="38287444" uncertainty-range-start="38287444">
@@ -925,7 +925,7 @@
         </chimeric-junction>
       </chimeric-junctions>
     </rearrangement>
-    <rearrangement allele-fraction="0.0308" analytical-only="false" description="TSC2(NM_000548) duplication intron 15 - intron 19" equivocal="false" in-frame="Yes" other-gene="TSC2" percent-reads="3.08" pos1="chr16:2122133" pos2="chr16:2114712" status="likely" supporting-read-pairs="14" targeted-gene="TSC2" type="duplication">
+    <rearrangement allele-fraction="0.0308" analytical-only="false" description="TSC2(NM_000548) duplication intron 15 - intron 19" equivocal="true" in-frame="Yes" other-gene="TSC2" percent-reads="3.08" pos1="chr16:2122133" pos2="chr16:2114712" status="likely" supporting-read-pairs="14" targeted-gene="TSC2" type="duplication">
       <chimeric-junctions first-disrupted-exon="16" genomic-type="duplication" intragenic="true" intron-exon-boundary-uncertainty="false" last-disrupted-exon="19">
         <chimeric-junction description="5'-TSC2(x1-19)-3':5'-TSC2(x16-42)-3'" equivocal="false" in-frame="Yes" in-strand="true" supporting-read-pairs="14">
           <partner-breakpoint annotation-position="2114712" chromosome="chr16" genomic-disruption-direction="-" uncertainty-range-end="2114712" uncertainty-range-start="2114712">
@@ -943,7 +943,7 @@
         </chimeric-junction>
       </chimeric-junctions>
     </rearrangement>
-    <rearrangement allele-fraction="0.0718" analytical-only="false" description="EGFR(NM_005228) rearrangement intron 6" equivocal="false" in-frame="unknown" other-gene="N/A" percent-reads="7.18" pos1="chr7:55220584" pos2="chr7:53482801" status="unknown" supporting-read-pairs="13" targeted-gene="EGFR" type="rearrangement">
+    <rearrangement allele-fraction="0.0718" analytical-only="true" description="EGFR(NM_005228) rearrangement intron 6" equivocal="true" in-frame="unknown" other-gene="N/A" percent-reads="7.18" pos1="chr7:55220584" pos2="chr7:53482801" status="unknown" supporting-read-pairs="13" targeted-gene="EGFR" type="rearrangement">
       <chimeric-junctions genomic-type="duplication" intragenic="false" intron-exon-boundary-uncertainty="false">
         <chimeric-junction description="5'-EGFR(x1-6)-3':FLJ45974-downstream(240kB)" equivocal="false" in-frame="unknown" in-strand="false" supporting-read-pairs="13">
           <partner-breakpoint annotation-position="55220584" chromosome="chr7" genomic-disruption-direction="+" uncertainty-range-end="55220584" uncertainty-range-start="55220584">

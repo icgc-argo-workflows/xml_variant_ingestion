@@ -8,10 +8,6 @@ include { XML_VCF } from '../modules/local/xml_vcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_SV } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_RA } from '../modules/nf-core/picard/liftovervcf/main'
 include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_CN } from '../modules/nf-core/picard/liftovervcf/main'
-include { PICARD_LIFTOVERVCF as PICARD_LIFTOVERVCF_CN_END } from '../modules/nf-core/picard/liftovervcf/main'
-include { LIFTOVER_MERGE } from '../modules/local/liftover_merge/main'
-// include { TABIX_TABIX } from '../modules/nf-core/tabix/tabix/main'
-include { TABIX_BGZIPTABIX } from '../modules/nf-core/tabix/bgziptabix/main'
 include { PREP_META } from '../modules/local/prep/metadata/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_SV } from '../modules/local/payload/main'
 include { PAYLOAD_VARIANT_CALL as  PAYLOAD_VARIANT_CALL_RA } from '../modules/local/payload/main'
@@ -164,30 +160,6 @@ workflow VARIANTCALL {
         hg19_to_hg38_chain_ch
     )
     ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
-
-    // PICARD_LIFTOVERVCF_CN_END (
-    //     XML_VCF.out.copy_number_end_vcf,
-    //     hg38_ref_dict,
-    //     hg38_ref_ch,
-    //     hg19_to_hg38_chain_ch
-    // )
-    // ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
-
-    // // lift over merge
-    // LIFTOVER_MERGE (
-    //     PICARD_LIFTOVERVCF_CN.out.vcf_lifted,
-    //     PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index,
-    //     PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted,
-    //     PICARD_LIFTOVERVCF_CN_END.out.vcf_lifted_index
-    // )
-    // ch_versions = ch_versions.mix(LIFTOVER_MERGE.out.versions)
-
-
-    // // compress and index vcf file
-    // TABIX_BGZIPTABIX (
-    //     LIFTOVER_MERGE.out.vcf_lifted
-    // )
-    // ch_versions = ch_versions.mix(TABIX_BGZIPTABIX.out.versions)
 
     //Payload Generation
     PICARD_LIFTOVERVCF_CN.out.vcf_lifted

@@ -50,7 +50,10 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
         '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total depth">',
         '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele frequency">',
         '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or germline">',
-        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample zygosity">'
+        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample zygosity">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical only">'
     ])
 
     return headers
@@ -65,7 +68,10 @@ def extract_data_from_short_variant(short_variant):
         'POS': short_variant.get('genomic-start'),
         'REF': short_variant.get('reference-sequence'),
         'SOMATIC-or-GERMLINE': short_variant.get('germline-status'),
-        'ZYGOSITY': short_variant.get('tumor-zygosity')
+        'ZYGOSITY': short_variant.get('tumor-zygosity'),
+        'status': short_variant.get('status'),
+        'equivocal': short_variant.get('equivocal'),
+        'analytical-only': short_variant.get('analytical-only')
     }
 
 def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it sort chr based on "chr1, chr2, chrX, chrY, chrUn_, chrM"
@@ -116,7 +122,13 @@ def process_dataframe(df, chr_list):
     df['ID'] = '.'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
-    df['INFO'] = 'DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str) + ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'].fillna('NA') + ';ZYGOSITY=' + df['ZYGOSITY'].fillna('NA')
+    df['INFO'] = 'DP=' + df['DP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'].fillna('NA') + \
+                    ';ZYGOSITY=' + df['ZYGOSITY'].fillna('NA') + \
+                    ';STATUS=' + df['status'] + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
     df.drop(['DP', 'AF'], axis=1, inplace=True)
     df['POS'] = df['POS'].astype(int)
     desired_order = ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']

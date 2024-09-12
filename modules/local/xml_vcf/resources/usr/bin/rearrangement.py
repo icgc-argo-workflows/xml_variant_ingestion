@@ -51,7 +51,10 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
         '##INFO=<ID=SRP,Number=1,Type=Integer,Description="Supporting Read Pairs">',
         '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
         '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of Structural Variant">',
-        '##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of the Mate Breakend">'
+        '##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of the Mate Breakend">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical only">'
     ])
 
     return headers
@@ -179,6 +182,9 @@ def main():
             'Pos2': rearrangement.get('pos2'),
             'SRP': rearrangement.get('supporting-read-pairs'),
             'type': rearrangement.get('type'),
+            'status': rearrangement.get('status'),
+            'equivocal': rearrangement.get('equivocal'),
+            'analytical-only': rearrangement.get('analytical-only'),
             'genomic-type': rearrangement.find('.//chimeric-junctions').get('genomic-type'),
             'description': rearrangement.find('.//chimeric-junction').get('description'),
         }
@@ -219,7 +225,12 @@ def main():
     df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2']), axis=1)
     df_a['QUAL'] = '.'
     df_a['FILTER'] = '.'
-    df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + ';SRP=' + df['SRP'].astype(str) + ';AF=' + df['AF'].astype(str)
+    df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + \
+                    ';SRP=' + df['SRP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    ';STATUS=' + df['status'] + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
 
     df_b = pd.DataFrame()
 
@@ -230,7 +241,11 @@ def main():
     df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1']), axis=1)
     df_b['QUAL'] = '.'
     df_b['FILTER'] = '.'
-    df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + ';SRP=' + df['SRP'].astype(str) + ';AF=' + df['AF'].astype(str)
+    df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + \
+                    ';SRP=' + df['SRP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
 
     result = pd.concat([df_a, df_b], ignore_index=True)
 
