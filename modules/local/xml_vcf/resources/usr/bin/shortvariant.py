@@ -47,13 +47,13 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     # Add INFO headers
     headers.extend([
-        '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total depth">',
-        '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele frequency">',
-        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or germline">',
-        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample zygosity">',
-        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of variant">',
-        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of variant">',
-        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical only">'
+        '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">',
+        '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
+        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or Germline">',
+        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample Zygosity">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of Variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of Variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical Only">'
     ])
 
     return headers

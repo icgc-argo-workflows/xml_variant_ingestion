@@ -52,9 +52,9 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
         '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
         '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of Structural Variant">',
         '##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of the Mate Breakend">',
-        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of variant">',
-        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of variant">',
-        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical only">'
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of Variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of Variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical Only">'
     ])
 
     return headers
