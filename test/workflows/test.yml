@@ -1,0 +1,40 @@
+- name: "xml variant ingestion"
+  command: nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/INPUT_FILE.XML \
+    --experiment_info_tsv ./test/data/MAPPING_FILE.TSV \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+  tags:
+    - "xml"
+    - "vcf"
+    - "liftover"
+  files:
+    - path: "output/liftover/copy_number/*.copy_number.lifted.vcf.gz"
+    - path: "output/liftover/copy_number/*.copy_number.lifted.vcf.gz.tbi"
+    - path: "output/liftover/copy_number/*.copy_number.unlifted.vcf.gz"
+
+    - path: "output/liftover/rearrangement/*.rearrangement.lifted.vcf.gz"
+    - path: "output/liftover/rearrangement/*.rearrangement.lifted.vcf.gz.tbi"
+    - path: "output/liftover/rearrangement/*.rearrangement.unlifted.vcf.gz"
+
+    - path: "output/liftover/short_variant/*.short_variant.lifted.vcf.gz"
+    - path: "output/liftover/short_variant/*.short_variant.lifted.vcf.gz.tbi"
+    - path: "output/liftover/short_variant/*.short_variant.unlifted.vcf.gz"
+
+    - path: "output/payload/copy_number/MONSTAR-JP.*.*/*.variant_call.payload.json"
+    - path: "output/payload/copy_number/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.cnv.vcf.gz"
+    - path: "output/payload/copy_number/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.cnv.vcf.gz.tbi"
+
+    - path: "output/payload/rearrangement/MONSTAR-JP.*.*/*.variant_call.payload.json"
+    - path: "output/payload/rearrangement/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.sv.vcf.gz"
+    - path: "output/payload/rearrangement/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.sv.vcf.gz.tbi"
+
+    - path: "output/payload/short_variant/MONSTAR-JP.*.*/*.variant_call.payload.json"
+    - path: "output/payload/short_variant/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.snv.vcf.gz"
+    - path: "output/payload/short_variant/MONSTAR-JP.*.*/out/MONSTAR-JP.*.*.targeted-seq.*.somatic-germline.snv.vcf.gz.tbi"
