@@ -1,6 +1,6 @@
 # XML Variant Ingestion
 
-The ARGO Data Platform accepts variant calling data in XML format (based on hg19 genome reference). The XML file will be converted to VCF file followed by lift over to GRCh38 reference genome. For details, please see the latest version of the [ARGO xml_variant_ingestion](https://github.com/icgc-argo-workflows/dna-seq-processing-wfs/releases) workflow.
+The ARGO Data Platform accepts variant calling data in XML format (based on hg19 genome reference). The XML file will be converted to VCF file followed by lift over to GRCh38 reference genome. For details, please see the latest version of the [ARGO xml_variant_ingestion workflow](https://github.com/icgc-argo-workflows/dna-seq-processing-wfs/releases).
 
 ## Inputs
 * Submitted XML file(s)
@@ -10,7 +10,7 @@ The ARGO Data Platform accepts variant calling data in XML format (based on hg19
 * Genome reference used to call variant in the XML file
 
 ## Processing
-* Submitted variant calling (XML) are converted into VCFs based on variant types (copy number alteration, rearrangement, short variant).
+* Submitted variant calling (XML) are converted into VCFs based on variant types (copy number alteration, rearrangement and short variant).
 * [Picard:liftovervcf](https://gatk.broadinstitute.org/hc/en-us/articles/27007978536219-LiftoverVcf-Picard) is used to lift the variant calling to GRCh38 reference genome.
 
 ## Output
