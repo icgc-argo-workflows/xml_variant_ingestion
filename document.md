@@ -19,3 +19,5 @@ The ARGO Data Platform accepts variant calling data in XML format (based on hg19
 * [Raw CNV Calls](https://docs.icgc-argo.org/docs/data/variant-calls#raw-cnv-calls) and [VCF Index](https://docs.icgc-argo.org/docs/data/variant-calls#vcf-index)
 
 ## Workflow Diagram
+
+https://docs.google.com/drawings/d/1EfyRtN1mtX-iPNDvbdqTQLfvZ8iNPneGJZr-wS6U-dM/edit
