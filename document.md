@@ -5,9 +5,9 @@ The ARGO Data Platform accepts variant calling data in XML format (based on hg19
 ## Inputs
 * Submitted XML file(s)
 * Mapping file
-* GRCh38 as human reference genome
-* Genome liftover chain file
-* Genome reference used to call variant in the XML file
+* [GRCh38](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/) as human reference genome
+* Genome liftover [chain file](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/)
+* [Genome reference](https://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/) used to call variant in the XML file
 
 ## Processing
 * Submitted variant calling (XML) are converted into VCFs based on variant types (copy number alteration, rearrangement and short variant).
