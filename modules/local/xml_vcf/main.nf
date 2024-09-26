@@ -15,7 +15,8 @@ process XML_VCF {
     path (hg19_fai)
 
     output:
-    tuple val(meta), path ("*.short_variant.vcf"), optional:true, emit: short_variant_vcf
+    tuple val(meta), path ("*.snv.vcf"), optional:true, emit: snv_vcf
+    tuple val(meta), path ("*.indel.vcf"), optional:true, emit: indel_vcf
     tuple val(meta), path ("*.rearrangement.vcf"), optional:true, emit: rearrangement_vcf
     tuple val(meta), path ("*.copy_number.vcf"), optional:true, emit: copy_number_vcf
     path "versions.yml", emit: versions
@@ -41,7 +42,8 @@ process XML_VCF {
         shortvariant.py \\
             -i ${xml} \\
             -r ${hg19_fai} \\
-            -o ${prefix}.short_variant.vcf
+            -o1 ${prefix}.snv.vcf \\
+            -o2 ${prefix}.indel.vcf
     fi
 
     # Run rearrangement.py if 'rearrangement ' is found in the output

@@ -16,8 +16,9 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- Author: Junjun Zhang <junjun.zhang@oicr.on.ca>
-         Linda Xiang <linda.xiang@oicr.on.ca>
+ Author:Guanqiao Feng <gfeng@oicr.on.ca>
+        Junjun Zhang <junjun.zhang@oicr.on.ca>
+        Linda Xiang <linda.xiang@oicr.on.ca>
  """
 
 import os
@@ -66,8 +67,10 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
         sys.exit('Error: unknown aligned seq extention: %s' % f)
 
     variant_type = ''
-    if 'short_variant' in f:
+    if 'snv' in f:
         variant_type = 'snv'
+    elif 'indel' in f:
+        variant_type = 'indel'
     elif 'rearrangement' in f:
         variant_type = 'sv'
     elif 'copy_number' in f:

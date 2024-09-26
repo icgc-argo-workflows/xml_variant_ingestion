@@ -148,7 +148,8 @@ def main():
     parser.add_argument('-r', '--reference', type=str, required=True, help="hg19 reference fai file name")
 
     # Add output file argument
-    parser.add_argument('-o', '--output', type=str, required=True, help="Output file name")
+    parser.add_argument('-o1', '--output1', type=str, required=True, help="Output file name for snv")
+    parser.add_argument('-o2', '--output2', type=str, required=True, help="Output file name for indel")
 
     # Parse the arguments
     args = parser.parse_args()
@@ -156,7 +157,8 @@ def main():
     # Use the parsed input and output file names
     input_file_name = args.input
     reference_file_name = args.reference
-    output_file_name = args.output
+    output_file_snv = args.output1
+    output_file_indel = args.output2
     date_str = date.today().strftime("%Y%m%d")
 
     tree = ET.parse(input_file_name)
@@ -186,11 +188,26 @@ def main():
     # Create VCF headers
     vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
 
+    # Define condition for indels (more than one character in REF or ALT)
+    indel_condition = (df_processed['REF'].str.len() > 1) | (df_processed['ALT'].str.len() > 1)
+
+    # Pop the indel rows into df_indel
+    df_indel = df_processed[indel_condition]
+
+    # Remaining rows (SNVs) in df_snv
+    df_snv = df_processed[~indel_condition]
+
     # Write headers and data to VCF file
-    with open(output_file_name, 'w') as f:
+    with open(output_file_snv, 'w') as f:
         for header_line in vcf_headers:
             f.write(f"{header_line}\n")
-        df_processed.to_csv(f, sep='\t', index=False)
+        df_snv.to_csv(f, sep='\t', index=False)
+
+    # Write headers and data to VCF file
+    with open(output_file_indel, 'w') as f:
+        for header_line in vcf_headers:
+            f.write(f"{header_line}\n")
+        df_indel.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()
