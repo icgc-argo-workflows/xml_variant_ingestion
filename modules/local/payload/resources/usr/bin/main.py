@@ -101,6 +101,7 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
 
 
 def get_files_info(file_to_upload):
+
     # Name format for index file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz.tbi
     # Name format for vcf file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz
     file_extension = file_to_upload.split(".")[-1]
@@ -131,6 +132,7 @@ def get_files_info(file_to_upload):
         data_category = 'Copy Number Variation'
     else:
         raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+
     return {
         'fileName': os.path.basename(file_to_upload),
         'fileType': 'VCF' if file_to_upload.split(".")[-2] == 'vcf' else 'TBI',
