@@ -104,34 +104,64 @@ def get_files_info(file_to_upload):
 
     # Name format for index file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz.tbi
     # Name format for vcf file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz
-    file_extension = file_to_upload.split(".")[-1]
-    second_last_part = file_to_upload.split(".")[-3] if len(file_to_upload.split(".")) > 2 else ""
-    third_last_part = file_to_upload.split(".")[-4] if len(file_to_upload.split(".")) > 3 else ""
+    # file_extension = file_to_upload.split(".")[-1]
+    # second_last_part = file_to_upload.split(".")[-3] if len(file_to_upload.split(".")) > 2 else ""
+    # third_last_part = file_to_upload.split(".")[-4] if len(file_to_upload.split(".")) > 3 else ""
 
-    if file_extension == 'tbi':
+    # if file_extension == 'tbi':
+    #     data_type = "VCF Index"
+    #     if third_last_part in ['snv', 'indel'] :
+    #         data_category = 'Simple Nucleotide Variation'
+    #     elif third_last_part == 'sv':
+    #         data_category = 'Structural Variation'
+    #     elif third_last_part == 'cnv':
+    #         data_category = 'Copy Number Variation'
+    #     else:
+    #         raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+    # elif second_last_part == 'snv':
+    #     data_type = 'Raw SNV Calls'
+    #     data_category = 'Simple Nucleotide Variation'
+    # elif second_last_part == 'indel':
+    #     data_type = 'Raw InDel Calls'
+    #     data_category = 'Simple Nucleotide Variation'
+    # elif second_last_part == 'sv':
+    #     data_type = 'Raw SV Calls'
+    #     data_category = 'Structural Variation'
+    # elif second_last_part == 'cnv':
+    #     data_type = 'Raw CNV Calls'
+    #     data_category = 'Copy Number Variation'
+    # else:
+    #     raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+
+    if file_to_upload.endswith('.tbi'):
         data_type = "VCF Index"
-        if third_last_part in ['snv', 'indel'] :
+        # Check for variations in the third-last part (e.g., .snv., .indel., etc.)
+        if '.snv.' in file_to_upload:
             data_category = 'Simple Nucleotide Variation'
-        elif third_last_part == 'sv':
+        elif '.indel.' in file_to_upload:
+            data_category = 'Simple Nucleotide Variation'
+        elif '.sv.' in file_to_upload:
             data_category = 'Structural Variation'
-        elif third_last_part == 'cnv':
+        elif '.cnv.' in file_to_upload:
             data_category = 'Copy Number Variation'
         else:
             raise ValueError(f"Data type not recognized for file: {file_to_upload}")
-    elif second_last_part == 'snv':
-        data_type = 'Raw SNV Calls'
-        data_category = 'Simple Nucleotide Variation'
-    elif second_last_part == 'indel':
-        data_type = 'Raw InDel Calls'
-        data_category = 'Simple Nucleotide Variation'
-    elif second_last_part == 'sv':
-        data_type = 'Raw SV Calls'
-        data_category = 'Structural Variation'
-    elif second_last_part == 'cnv':
-        data_type = 'Raw CNV Calls'
-        data_category = 'Copy Number Variation'
     else:
-        raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+        # Non-index file (.vcf.gz)
+        if '.snv.' in file_to_upload:
+            data_type = 'Raw SNV Calls'
+            data_category = 'Simple Nucleotide Variation'
+        elif '.indel.' in file_to_upload:
+            data_type = 'Raw InDel Calls'
+            data_category = 'Simple Nucleotide Variation'
+        elif '.sv.' in file_to_upload:
+            data_type = 'Raw SV Calls'
+            data_category = 'Structural Variation'
+        elif '.cnv.' in file_to_upload:
+            data_type = 'Raw CNV Calls'
+            data_category = 'Copy Number Variation'
+        else:
+            raise ValueError(f"Data type not recognized for file: {file_to_upload}")
 
     return {
         'fileName': os.path.basename(file_to_upload),
