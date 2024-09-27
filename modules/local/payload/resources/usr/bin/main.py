@@ -101,15 +101,45 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
 
 
 def get_files_info(file_to_upload):
+    # Name format for index file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz.tbi
+    # Name format for vcf file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz
+    file_extension = file_to_upload.split(".")[-1]
+    second_last_part = file_to_upload.split(".")[-3] if len(file_to_upload.split(".")) > 2 else ""
+    third_last_part = file_to_upload.split(".")[-4] if len(file_to_upload.split(".")) > 3 else ""
+
+    if file_extension == 'tbi':
+        data_type = "VCF Index"
+        if third_last_part in ['snv', 'indel'] :
+            data_category = 'Simple Nucleotide Variation'
+        elif third_last_part == 'sv':
+            data_category = 'Structural Variation'
+        elif third_last_part == 'cnv':
+            data_category = 'Copy Number Variation'
+        else:
+            raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+    elif second_last_part == 'snv':
+        data_type = 'Raw SNV Calls'
+        data_category = 'Simple Nucleotide Variation'
+    elif second_last_part == 'indel':
+        data_type = 'Raw InDel Calls'
+        data_category = 'Simple Nucleotide Variation'
+    elif second_last_part == 'sv':
+        data_type = 'Raw SV Calls'
+        data_category = 'Structural Variation'
+    elif second_last_part == 'cnv':
+        data_type = 'Raw CNV Calls'
+        data_category = 'Copy Number Variation'
+    else:
+        raise ValueError(f"Data type not recognized for file: {file_to_upload}")
     return {
         'fileName': os.path.basename(file_to_upload),
         'fileType': 'VCF' if file_to_upload.split(".")[-2] == 'vcf' else 'TBI',
         'fileSize': calculate_size(file_to_upload),
         'fileMd5sum': calculate_md5(file_to_upload),
         'fileAccess': 'controlled',
-        'dataType': 'Raw Variant Calls' if file_to_upload.split(".")[-2] == 'vcf' else 'VCF Index',
+        'dataType': data_type, # update
         'info': {
-            'data_category': 'Simple Nucleotide Variation' if file_to_upload.split(".")[-3] == 'snv' or file_to_upload.split(".")[-4] == 'snv' else 'Rearrangement Variation'
+            'data_category': data_category # update
             }
     }
 
