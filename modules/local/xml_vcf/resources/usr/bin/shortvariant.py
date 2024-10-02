@@ -211,18 +211,15 @@ def main():
     df_mnv = df[df['variant-type'] == 'multiple-nucleotide-substitution']
     df_snv = df[df['variant-type'] == 'single-nucleotide-substitution']
     df_indel = df[~df['variant-type'].isin(['multiple-nucleotide-substitution', 'single-nucleotide-substitution'])]
-    print(df_mnv)
 
     # Get chromosome order information
     chr_ordered = chr_pos_order(list(chr_dic))
 
     # Split MNVs to multiple SNVs
     df_snvs = split_MNV_SNV(df_mnv)
-    print(df_snvs)
 
     # Merge df_snvs with df_snv
     df_snv_total = pd.concat([df_snv, df_snvs]).reset_index(drop=True)
-    print(df_snv_total)
 
     # Process the DataFrame
     df_indel_processed,chrs_indel = process_dataframe(df_indel, chr_ordered)    # indel
