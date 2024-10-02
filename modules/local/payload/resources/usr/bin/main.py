@@ -78,12 +78,14 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     else:
         sys.exit('Error: unknown variant type: %s' % f)
 
-    new_name = "%s.%s.%s.%s.%s.somatic-germline.%s.%s" % (
+    new_name = "%s.%s.%s.%s.%s.%s.%s.%s.%s" % (
         payload['studyId'],
         seq_experiment_analysis_dict['donor_id'],
         seq_experiment_analysis_dict['sample_id'],
         experimental_strategy,
         date_str,
+        payload['workflow']['workflow_short_name'],
+        seq_experiment_analysis_dict['variant_class'].replace(",", "-").lower(),
         variant_type,
         file_ext
     )
@@ -209,7 +211,7 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "Somatic",  # update to "Somatic/Germline" after schema update
+        'variant_class' : "Somatic",  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
         'files': []
     }
 
