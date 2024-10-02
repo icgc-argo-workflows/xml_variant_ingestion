@@ -30,7 +30,7 @@ from datetime import date
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     headers = [
-        '##fileformat=VCFv4.2',
+        '##fileformat=VCFv4.3',
         f'##fileDate={date_str}',
         f'##source={input_file_name}',
         '##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz'
@@ -49,8 +49,11 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
     headers.extend([
         '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">',
         '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
-        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="somatic or germline">',
-        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="sample zygosity">'
+        '##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or Germline">',
+        '##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample Zygosity">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of Variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of Variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical Only">'
     ])
 
     return headers
@@ -65,8 +68,39 @@ def extract_data_from_short_variant(short_variant):
         'POS': short_variant.get('genomic-start'),
         'REF': short_variant.get('reference-sequence'),
         'SOMATIC-or-GERMLINE': short_variant.get('germline-status'),
-        'ZYGOSITY': short_variant.get('tumor-zygosity')
+        'ZYGOSITY': short_variant.get('tumor-zygosity'),
+        'status': short_variant.get('status'),
+        'equivocal': short_variant.get('equivocal'),
+        'analytical-only': short_variant.get('analytical-only'),
+        'variant-type': short_variant.get('variant-type')
     }
+
+def split_MNV_SNV(df):
+    # Create an empty list to store the expanded rows
+    expanded_rows = []
+
+    # Loop through each row
+    for _, row in df.iterrows():
+        ref = row['REF']
+        alt = row['ALT']
+        pos = int(row['POS'])
+
+        # Ensure REF and ALT are the same length
+        if len(ref) == len(alt):
+            for i in range(len(ref)):
+                new_row = row.copy()
+                new_row['REF'] = ref[i]
+                new_row['ALT'] = alt[i]
+                new_row['POS'] = pos + i
+                expanded_rows.append(new_row)
+
+    # Create a new dataframe from the expanded rows
+    df_expanded = pd.DataFrame(expanded_rows)
+
+    # Reset the index
+    df_expanded.reset_index(drop=True, inplace=True)
+
+    return df_expanded
 
 def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it sort chr based on "chr1, chr2, chrX, chrY, chrUn_, chrM"
     chr_sort = {}
@@ -113,10 +147,17 @@ def chr_pos_sort(df, chr_ordered): # sort dataframe based on chr and pos
 # where DP means depth and AF means allele frequency
 def process_dataframe(df, chr_list):
 
+    df = df.copy()
     df['ID'] = '.'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
-    df['INFO'] = 'DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str) + ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'] + ';ZYGOSITY=' + df['ZYGOSITY']
+    df['INFO'] = 'DP=' + df['DP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'].fillna('NA') + \
+                    ';ZYGOSITY=' + df['ZYGOSITY'].fillna('NA') + \
+                    ';STATUS=' + df['status'] + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
     df.drop(['DP', 'AF'], axis=1, inplace=True)
     df['POS'] = df['POS'].astype(int)
     desired_order = ['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO']
@@ -136,7 +177,8 @@ def main():
     parser.add_argument('-r', '--reference', type=str, required=True, help="hg19 reference fai file name")
 
     # Add output file argument
-    parser.add_argument('-o', '--output', type=str, required=True, help="Output file name")
+    parser.add_argument('-o1', '--output1', type=str, required=True, help="Output file name for snv")
+    parser.add_argument('-o2', '--output2', type=str, required=True, help="Output file name for indel")
 
     # Parse the arguments
     args = parser.parse_args()
@@ -144,7 +186,8 @@ def main():
     # Use the parsed input and output file names
     input_file_name = args.input
     reference_file_name = args.reference
-    output_file_name = args.output
+    output_file_snv = args.output1
+    output_file_indel = args.output2
     date_str = date.today().strftime("%Y%m%d")
 
     tree = ET.parse(input_file_name)
@@ -165,20 +208,38 @@ def main():
         data.append(short_variant_data)
     df = pd.DataFrame(data)
 
+    df_mnv = df[df['variant-type'] == 'multiple-nucleotide-substitution']
+    df_snv = df[df['variant-type'] == 'single-nucleotide-substitution']
+    df_indel = df[~df['variant-type'].isin(['multiple-nucleotide-substitution', 'single-nucleotide-substitution'])]
+
     # Get chromosome order information
     chr_ordered = chr_pos_order(list(chr_dic))
 
+    # Split MNVs to multiple SNVs
+    df_snvs = split_MNV_SNV(df_mnv)
+
+    # Merge df_snvs with df_snv
+    df_snv_total = pd.concat([df_snv, df_snvs]).reset_index(drop=True)
+
     # Process the DataFrame
-    df_processed,chrs = process_dataframe(df, chr_ordered)
+    df_indel_processed,chrs_indel = process_dataframe(df_indel, chr_ordered)    # indel
+    df_snv_total_processed,chrs_snv = process_dataframe(df_snv_total, chr_ordered)  # total snv
 
     # Create VCF headers
-    vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
+    vcf_headers_indel = create_vcf_header(date_str, chrs_indel, chr_dic, input_file_name)   # indel
+    vcf_headers_snv_total = create_vcf_header(date_str, chrs_snv, chr_dic, input_file_name)
 
     # Write headers and data to VCF file
-    with open(output_file_name, 'w') as f:
-        for header_line in vcf_headers:
+    with open(output_file_snv, 'w') as f:
+        for header_line in vcf_headers_snv_total:
             f.write(f"{header_line}\n")
-        df_processed.to_csv(f, sep='\t', index=False)
+        df_snv_total_processed.to_csv(f, sep='\t', index=False)
+
+    # Write headers and data to VCF file
+    with open(output_file_indel, 'w') as f:
+        for header_line in vcf_headers_indel:
+            f.write(f"{header_line}\n")
+        df_indel_processed.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()

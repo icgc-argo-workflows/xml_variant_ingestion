@@ -31,7 +31,7 @@ from datetime import date
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     headers = [
-        '##fileformat=VCFv4.2',
+        '##fileformat=VCFv4.3',
         f'##fileDate={date_str}',
         f'##source={input_file_name}',
         '##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz'
@@ -48,10 +48,13 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
     # Add INFO headers
     headers.extend([
-        '##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">',
+        '##INFO=<ID=SRP,Number=1,Type=Integer,Description="Supporting Read Pairs">',
         '##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">',
-        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">',
-        '##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of mate breakends">'
+        '##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of Structural Variant">',
+        '##INFO=<ID=MATEID,Number=.,Type=String,Description="ID of the Mate Breakend">',
+        '##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of Variant">',
+        '##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of Variant">',
+        '##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical Only">'
     ])
 
     return headers
@@ -70,7 +73,7 @@ def extract_nucleotide(fasta_file, pos):
     fasta = Fasta(fasta_file, as_raw=True)
     sequence = fasta[pos.split(':')[0]][int(pos.split(':')[1])-1]
     fasta.close()
-    return sequence
+    return sequence.upper()
 
 # create alt
 def alternative(pos1, pos2):
@@ -177,8 +180,11 @@ def main():
             'AF': rearrangement.get('allele-fraction'),
             'Pos1': rearrangement.get('pos1'),
             'Pos2': rearrangement.get('pos2'),
-            'DP': rearrangement.get('supporting-read-pairs'),
+            'SRP': rearrangement.get('supporting-read-pairs'),
             'type': rearrangement.get('type'),
+            'status': rearrangement.get('status'),
+            'equivocal': rearrangement.get('equivocal'),
+            'analytical-only': rearrangement.get('analytical-only'),
             'genomic-type': rearrangement.find('.//chimeric-junctions').get('genomic-type'),
             'description': rearrangement.find('.//chimeric-junction').get('description'),
         }
@@ -219,7 +225,12 @@ def main():
     df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2']), axis=1)
     df_a['QUAL'] = '.'
     df_a['FILTER'] = '.'
-    df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + ';DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str)
+    df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + \
+                    ';SRP=' + df['SRP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    ';STATUS=' + df['status'] + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
 
     df_b = pd.DataFrame()
 
@@ -230,7 +241,11 @@ def main():
     df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1']), axis=1)
     df_b['QUAL'] = '.'
     df_b['FILTER'] = '.'
-    df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + ';DP=' + df['DP'].astype(str) + ';AF=' + df['AF'].astype(str)
+    df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + \
+                    ';SRP=' + df['SRP'].astype(str) + \
+                    ';AF=' + df['AF'].astype(str) + \
+                    df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
+                    df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
 
     result = pd.concat([df_a, df_b], ignore_index=True)
 

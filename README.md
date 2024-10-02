@@ -52,3 +52,93 @@ nextflow run main.nf \
     --hg38_ref_fai /PATH/TO/hg38.fa.fai \
     --hg38_ref_dict /PATH/TO/hg38.dict
 ```
+
+#### Test data (Original)
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/example.xml \
+    --experiment_info_tsv ./test/data/sample_new.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```
+
+#### Test data ( Test1 - ORD-0000001-01.xml - short-variants/copy-number-alterations	)
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/ORD-0000001-01.xml \
+    --experiment_info_tsv ./test/data/sample_1.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```
+
+#### Test data ( Test2 - ORD-0000002-01.xml - short-variants )
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/ORD-0000002-01.xml \
+    --experiment_info_tsv ./test/data/sample_2.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```
+
+#### Test data ( Test3 - ORD-0000003-01.xml - short-variants )
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/ORD-0000003-01.xml \
+    --experiment_info_tsv ./test/data/sample_3.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```
+
+#### Test data ( Test4 - ORD-0000004-01.xml - short-variants )
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/ORD-0000004-01.xml \
+    --experiment_info_tsv ./test/data/sample_4.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```
+
+#### Test data ( Test5 - ORD-0000005-01.xml - short-variants/copy-number-alterations/rearrangements )
+```bash
+nextflow run main.nf \
+    -profile docker,rdpc_qa,test_rdpc_qa \
+    --api_token NNNNNNN \
+    --xml ./test/data/ORD-0000005-01.xml \
+    --experiment_info_tsv ./test/data/sample_5.tsv \
+    --hg19_ref_fa /PATH/TO/hg19.fa \
+    --hg19_ref_fai /PATH/TO/hg19.fa.fai \
+    --hg19_to_hg38_chain /PATH/TO/hg19ToHg38.over.chain.gz \
+    --hg38_ref_fa /PATH/TO/hg38.fa.gz \
+    --hg38_ref_fai /PATH/TO/hg38.fa.fai \
+    --hg38_ref_dict /PATH/TO/hg38.dict
+```

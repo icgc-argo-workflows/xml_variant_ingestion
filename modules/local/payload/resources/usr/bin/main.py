@@ -16,8 +16,9 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
- Author: Junjun Zhang <junjun.zhang@oicr.on.ca>
-         Linda Xiang <linda.xiang@oicr.on.ca>
+ Author:Guanqiao Feng <gfeng@oicr.on.ca>
+        Junjun Zhang <junjun.zhang@oicr.on.ca>
+        Linda Xiang <linda.xiang@oicr.on.ca>
  """
 
 import os
@@ -66,19 +67,25 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
         sys.exit('Error: unknown aligned seq extention: %s' % f)
 
     variant_type = ''
-    if 'short_variant' in f:
+    if 'snv' in f:
         variant_type = 'snv'
+    elif 'indel' in f:
+        variant_type = 'indel'
     elif 'rearrangement' in f:
         variant_type = 'sv'
+    elif 'copy_number' in f:
+        variant_type = 'cnv'
     else:
         sys.exit('Error: unknown variant type: %s' % f)
 
-    new_name = "%s.%s.%s.%s.%s.somatic-germline.%s.%s" % (
+    new_name = "%s.%s.%s.%s.%s.%s.%s.%s.%s" % (
         payload['studyId'],
         seq_experiment_analysis_dict['donor_id'],
         seq_experiment_analysis_dict['sample_id'],
         experimental_strategy,
         date_str,
+        payload['workflow']['workflow_short_name'],
+        seq_experiment_analysis_dict['variant_class'].replace(",", "-").lower(),
         variant_type,
         file_ext
     )
@@ -96,15 +103,48 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
 
 
 def get_files_info(file_to_upload):
+
+    # Name format for index file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz.tbi
+    # Name format for vcf file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz
+    if file_to_upload.endswith('.tbi'):
+        data_type = "VCF Index"
+        # Check for variations in the third-last part (e.g., .snv., .indel., etc.)
+        if '.snv.' in file_to_upload:
+            data_category = 'Simple Nucleotide Variation'
+        elif '.indel.' in file_to_upload:
+            data_category = 'Simple Nucleotide Variation'
+        elif '.sv.' in file_to_upload:
+            data_category = 'Structural Variation'
+        elif '.cnv.' in file_to_upload:
+            data_category = 'Copy Number Variation'
+        else:
+            raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+    else:
+        # Non-index file (.vcf.gz)
+        if '.snv.' in file_to_upload:
+            data_type = 'Raw SNV Calls'
+            data_category = 'Simple Nucleotide Variation'
+        elif '.indel.' in file_to_upload:
+            data_type = 'Raw InDel Calls'
+            data_category = 'Simple Nucleotide Variation'
+        elif '.sv.' in file_to_upload:
+            data_type = 'Raw SV Calls'
+            data_category = 'Structural Variation'
+        elif '.cnv.' in file_to_upload:
+            data_type = 'Raw CNV Calls'
+            data_category = 'Copy Number Variation'
+        else:
+            raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+
     return {
         'fileName': os.path.basename(file_to_upload),
         'fileType': 'VCF' if file_to_upload.split(".")[-2] == 'vcf' else 'TBI',
         'fileSize': calculate_size(file_to_upload),
         'fileMd5sum': calculate_md5(file_to_upload),
         'fileAccess': 'controlled',
-        'dataType': 'Raw Variant Calls' if file_to_upload.split(".")[-2] == 'vcf' else 'VCF Index',
+        'dataType': data_type, # update
         'info': {
-            'data_category': 'Simple Nucleotide Variation' if file_to_upload.split(".")[-3] == 'snv' or file_to_upload.split(".")[-4] == 'snv' else 'Rearrangement Variation'
+            'data_category': data_category # update
             }
     }
 
@@ -171,7 +211,7 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "Somatic",  # update to "Somatic/Germline" after schema update
+        'variant_class' : "Somatic",  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
         'files': []
     }
 
