@@ -71,8 +71,36 @@ def extract_data_from_short_variant(short_variant):
         'ZYGOSITY': short_variant.get('tumor-zygosity'),
         'status': short_variant.get('status'),
         'equivocal': short_variant.get('equivocal'),
-        'analytical-only': short_variant.get('analytical-only')
+        'analytical-only': short_variant.get('analytical-only'),
+        'variant-type': short_variant.get('variant-type')
     }
+
+def split_MNV_SNV(df):
+    # Create an empty list to store the expanded rows
+    expanded_rows = []
+
+    # Loop through each row
+    for _, row in df.iterrows():
+        ref = row['REF']
+        alt = row['ALT']
+        pos = int(row['POS'])
+
+        # Ensure REF and ALT are the same length
+        if len(ref) == len(alt):
+            for i in range(len(ref)):
+                new_row = row.copy()
+                new_row['REF'] = ref[i]
+                new_row['ALT'] = alt[i]
+                new_row['POS'] = pos + i
+                expanded_rows.append(new_row)
+
+    # Create a new dataframe from the expanded rows
+    df_expanded = pd.DataFrame(expanded_rows)
+
+    # Reset the index
+    df_expanded.reset_index(drop=True, inplace=True)
+
+    return df_expanded
 
 def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it sort chr based on "chr1, chr2, chrX, chrY, chrUn_, chrM"
     chr_sort = {}
@@ -119,6 +147,7 @@ def chr_pos_sort(df, chr_ordered): # sort dataframe based on chr and pos
 # where DP means depth and AF means allele frequency
 def process_dataframe(df, chr_list):
 
+    df = df.copy()
     df['ID'] = '.'
     df['QUAL'] = '.'
     df['FILTER'] = '.'
@@ -179,35 +208,41 @@ def main():
         data.append(short_variant_data)
     df = pd.DataFrame(data)
 
+    df_mnv = df[df['variant-type'] == 'multiple-nucleotide-substitution']
+    df_snv = df[df['variant-type'] == 'single-nucleotide-substitution']
+    df_indel = df[~df['variant-type'].isin(['multiple-nucleotide-substitution', 'single-nucleotide-substitution'])]
+    print(df_mnv)
+
     # Get chromosome order information
     chr_ordered = chr_pos_order(list(chr_dic))
 
+    # Split MNVs to multiple SNVs
+    df_snvs = split_MNV_SNV(df_mnv)
+    print(df_snvs)
+
+    # Merge df_snvs with df_snv
+    df_snv_total = pd.concat([df_snv, df_snvs]).reset_index(drop=True)
+    print(df_snv_total)
+
     # Process the DataFrame
-    df_processed,chrs = process_dataframe(df, chr_ordered)
+    df_indel_processed,chrs_indel = process_dataframe(df_indel, chr_ordered)    # indel
+    df_snv_total_processed,chrs_snv = process_dataframe(df_snv_total, chr_ordered)  # total snv
 
     # Create VCF headers
-    vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
-
-    # Define condition for indels (more than one character in REF or ALT)
-    indel_condition = (df_processed['REF'].str.len() > 1) | (df_processed['ALT'].str.len() > 1)
-
-    # Pop the indel rows into df_indel
-    df_indel = df_processed[indel_condition]
-
-    # Remaining rows (SNVs) in df_snv
-    df_snv = df_processed[~indel_condition]
+    vcf_headers_indel = create_vcf_header(date_str, chrs_indel, chr_dic, input_file_name)   # indel
+    vcf_headers_snv_total = create_vcf_header(date_str, chrs_snv, chr_dic, input_file_name)
 
     # Write headers and data to VCF file
     with open(output_file_snv, 'w') as f:
-        for header_line in vcf_headers:
+        for header_line in vcf_headers_snv_total:
             f.write(f"{header_line}\n")
-        df_snv.to_csv(f, sep='\t', index=False)
+        df_snv_total_processed.to_csv(f, sep='\t', index=False)
 
     # Write headers and data to VCF file
     with open(output_file_indel, 'w') as f:
-        for header_line in vcf_headers:
+        for header_line in vcf_headers_indel:
             f.write(f"{header_line}\n")
-        df_indel.to_csv(f, sep='\t', index=False)
+        df_indel_processed.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()

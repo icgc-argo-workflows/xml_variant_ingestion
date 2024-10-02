@@ -1,0 +1,16 @@
+##fileformat=VCFv4.3
+##fileDate=20241002
+##source=/Users/gfeng/Documents/Work/ICGC-ARGO-WORKFLOWS/Monstar/new_dataset2/xml_variant_ingestion/test/data/ORD-0000004-01.xml
+##reference=https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz
+##contig=<ID=chr5,length=180915260>
+##contig=<ID=chr17,length=81195210>
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=SOMATIC-OR-GERMLINE,Number=1,Type=String,Description="Somatic or Germline">
+##INFO=<ID=ZYGOSITY,Number=1,Type=String,Description="Sample Zygosity">
+##INFO=<ID=STATUS,Number=1,Type=String,Description="Status of Variant">
+##INFO=<ID=EQUIVOCAL,Number=0,Type=Flag,Description="Equivocal of Variant">
+##INFO=<ID=AO,Number=0,Type=Flag,Description="Analytical Only">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr5	112175956	.	AAC	T	.	.	DP=9001;AF=0.4983;SOMATIC-OR-GERMLINE=somatic;ZYGOSITY=homozygous;STATUS=likely
+chr17	7577018	.	CCTCGCTTAGTGCT	C	.	.	DP=8590;AF=0.4430;SOMATIC-OR-GERMLINE=somatic;ZYGOSITY=homozygous;STATUS=likely

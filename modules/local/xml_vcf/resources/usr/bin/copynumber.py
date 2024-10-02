@@ -111,9 +111,10 @@ def calculate_length(position):
     start, end = map(int, positions.split('-'))
     return end - start + 1
 
-# Process dataframe by adding "ID", "QUAL", "FILTER" with default value "." and "INFO" with "DP=#;AF=#"
-# where DP means depth and AF means allele frequency
+# Process dataframe by adding "ID", "QUAL", "FILTER" with default value "." and "INFO"
 def process_dataframe(df, chr_list, fasta_file):
+
+    df = df.copy()
 
     df['#CHROM'] = df['position'].apply(lambda x: x.split(':')[0])
     df['POS'] = df['position'].apply(lambda x: x.split(':')[1].split('-')[0]).astype(int) - 1
@@ -168,9 +169,6 @@ def main():
     # Add output file argument
     parser.add_argument('-o', '--output', type=str, required=True, help="Output file name")
 
-    # # Add output file argument
-    # parser.add_argument('-o2', '--output2', type=str, required=True, help="Output file name for end of CNV")
-
     # Parse the arguments
     args = parser.parse_args()
 
@@ -207,27 +205,6 @@ def main():
     # Process the DataFrame
     df_processed,chrs = process_dataframe(df, chr_ordered, reference_file_name)
 
-    # # Generate sequential IDs which will be used later to match the CNV record with END position
-    # df_processed['ID'] = [f'r_{i+1}' for i in range(len(df_processed))]
-    # # print(df_processed)
-
-    # # used to generate END vcf
-    # df_end = df_processed.copy()
-
-    # # Apply lambda function to remove END=... part for the output vcf
-    # df_processed['INFO'] = df_processed['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
-
-    # # Extract the END values and update POS column for the END vcf
-    # df_end['POS'] = df_end['INFO'].apply(lambda x: re.search(r'END=([0-9]+);', x).group(1) if re.search(r'END=([0-9]+);', x) else df_end['POS'])
-
-    # # Remove END=... from INFO column for END vcf
-    # df_end['INFO'] = df_end['INFO'].apply(lambda x: re.sub(r'END=[^;]+;', '', x))
-
-    # # Update Ref with the chr and pos using hg19 for END vcf
-    # df_end['CHROM_POS'] = df_end.apply(lambda row: f"{row['#CHROM']}:{row['POS']}", axis=1)
-    # df_end['REF'] = df_end['CHROM_POS'].apply(lambda x: extract_nucleotide(reference_file_name, x))
-    # df_end.drop(columns=['CHROM_POS'], inplace=True)
-
     # Create VCF headers
     vcf_headers = create_vcf_header(date_str, chrs, chr_dic, input_file_name)
 
@@ -236,12 +213,6 @@ def main():
         for header_line in vcf_headers:
             f.write(f"{header_line}\n")
         df_processed.to_csv(f, sep='\t', index=False)
-
-    # # Write headers and data to VCF file
-    # with open(output_file_end_name, 'w') as f:
-    #     for header_line in vcf_headers:
-    #         f.write(f"{header_line}\n")
-    #     df_end.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()
