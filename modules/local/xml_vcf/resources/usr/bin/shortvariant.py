@@ -26,6 +26,8 @@ import pandas as pd
 import argparse
 import re
 from datetime import date
+from Bio import SeqIO
+import requests
 
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 
@@ -63,17 +65,100 @@ def extract_data_from_short_variant(short_variant):
         # Extract useful information from the xml file
         'AF': short_variant.get('allele-fraction'),
         'ALT': short_variant.get('alternate-sequence'),
-        '#CHROM': short_variant.get('chromosome'),
+        '#CHROM': short_variant.get('chromosome') if short_variant.get('chromosome') else short_variant.get('position').split(":")[0],
         'DP': short_variant.get('depth'),
-        'POS': short_variant.get('genomic-start'),
+        'POS': short_variant.get('genomic-start') if short_variant.get('genomic-start') else short_variant.get('position').split(":")[-1],
         'REF': short_variant.get('reference-sequence'),
         'SOMATIC-or-GERMLINE': short_variant.get('germline-status'),
         'ZYGOSITY': short_variant.get('tumor-zygosity'),
         'status': short_variant.get('status'),
         'equivocal': short_variant.get('equivocal'),
-        'analytical-only': short_variant.get('analytical-only'),
-        'variant-type': short_variant.get('variant-type')
+        'analytical-only': short_variant.get('analytical-only') if short_variant.get('analytical-only') else "false",
+        'variant-type': short_variant.get('variant-type'),
+        'cds-effect': short_variant.get('cds-effect'),
+        'gene': short_variant.get('gene'),
     }
+
+def update_missing_info_from_cds(short_variant,reference_file):
+    ###Find matching reference seqeucne
+    for record in SeqIO.parse(reference_file, "fasta"):
+        if record.id==short_variant.get('#CHROM'):
+            break
+
+    ### Check for type of SNV
+    if "del" in short_variant.get('cds-effect'):
+        ###Populate initial variables
+        start=int(short_variant.get("POS"))
+        del_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
+        end=start+len(del_sequence)
+        gene=short_variant.get('gene').replace("MLL2","KMT2D")
+
+        ###Query for strand information from API
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        response=requests.get(url)
+
+        if response.status_code!=200:
+            print("ERRORD1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower())
+            exit(1)
+            
+        strand=response.json()['gene']['strand']
+
+        if strand==-1:
+            ###If strand is reverse, find matching sequence and report as forward strand
+            if record.seq[start:end].upper()==Seq(sequence).upper().reverse_complement():
+                updated=start-1
+                short_variant['REF']=record.seq[updated:end].upper()
+                short_variant['ALT']=record.seq[updated:end-len(sequence)].upper()
+            else:
+                print("ErrorD2: Expected sequence does not match reverse complement of provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(sequence).upper().reverse_complement()))
+        elif strand==1:
+            ### If strand is forward, sanity check by finding matching sequence
+            if record.seq[start:end].upper()==Seq(sequence).upper():
+                updated=start-1
+                short_variant['REF']=record.seq[updated:end].upper()
+                short_variant['ALT']=record.seq[updated:end-len(sequence)].upper()
+            else:
+                print("ErrorD2: Expected sequence does not match provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(sequence).upper()))
+        else:
+            print("ErrorD4: RETURN STRAND DOES NOT COMPUTE")
+
+    elif "ins" in short_variant.get('cds-effect'):
+        ###Populate initial variables
+        start=int(short_variant.get("POS"))
+        added_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
+        end=start+1
+        gene=short_variant.get('gene').replace("MLL2","KMT2D")
+
+        ###Query for strand information from API
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        response=requests.get(url)
+
+        if response.status_code!=200:
+            print("ERRORI1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower())
+            exit(1)
+            
+        strand=response.json()['gene']['strand']
+
+        if strand==-1:
+            updated=start
+            short_variant['REF']=record.seq[updated:end].upper()
+            short_variant['ALT']=added_sequence+record.seq[updated:end].upper()
+        elif strand==1:
+            updated=start
+            short_variant['REF']=record.seq[updated:end].upper()
+            short_variant['ALT']=record.seq[updated:end].upper()+added_sequence
+        else:
+            print("ERRORI2: UNKNOWN STRAND FOUND IN %s" % (gene) )
+            exit(1)
+    elif ">" in short_variant.get('cds-effect'):
+
+        short_variant['REF']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0]
+        short_variant['ALT']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[1]
+        ### Label single or multi based on length of affected REF sequence
+        short_variant['variant-type']= 'multiple-nucleotide-substitution' if len(re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0])>1 else 'single-nucleotide-substitution'
+    else:
+        print("ERROR: UNKNOWN VARIANT TYPE DETECTED" )
+
 
 def split_MNV_SNV(df):
     # Create an empty list to store the expanded rows
@@ -154,7 +239,7 @@ def process_dataframe(df, chr_list):
     df['INFO'] = 'DP=' + df['DP'].astype(str) + \
                     ';AF=' + df['AF'].astype(str) + \
                     ';SOMATIC-OR-GERMLINE=' + df['SOMATIC-or-GERMLINE'].fillna('NA') + \
-                    ';ZYGOSITY=' + df['ZYGOSITY'].fillna('NA') + \
+                    ';ZYGOSITY=' + df['ZYGOSITY'].replace("not applicable","NA").fillna('NA') + \
                     ';STATUS=' + df['status'] + \
                     df['equivocal'].apply(lambda x: ';EQUIVOCAL' if x.lower() == 'true' else '') + \
                     df['analytical-only'].apply(lambda x: ';AO' if x.lower() == 'true' else '')
@@ -174,7 +259,8 @@ def main():
     parser.add_argument('-i', '--input', type=str, required=True, help="Input file name")
 
     # Add hg19 fasta reference file
-    parser.add_argument('-r', '--reference', type=str, required=True, help="hg19 reference fai file name")
+    parser.add_argument('-r', '--reference', type=str, required=True, help="hg19 reference file name")
+    parser.add_argument('-r2', '--reference-fai', type=str, required=True, help="hg19 reference fai file name")
 
     # Add output file argument
     parser.add_argument('-o1', '--output1', type=str, required=True, help="Output file name for snv")
@@ -185,7 +271,8 @@ def main():
 
     # Use the parsed input and output file names
     input_file_name = args.input
-    reference_file_name = args.reference
+    reference_file = args.reference
+    reference_fai_file_name = args.reference_fai
     output_file_snv = args.output1
     output_file_indel = args.output2
     date_str = date.today().strftime("%Y%m%d")
@@ -194,7 +281,7 @@ def main():
     root = tree.getroot()
 
     chr_dic = {}
-    with open(reference_file_name, 'r') as f:
+    with open(reference_fai_file_name, 'r') as f:
         for line in f:
             chr_name = line.split('\t')[0].strip()
             chr_len = int(line.split('\t')[1].strip())
@@ -202,12 +289,17 @@ def main():
 
     # Extract information from xml
     data = []
-
-    for short_variant in root.findall('.//short-variant'):
+    total=root.findall('.//short-variant')
+    for count,short_variant in enumerate(total):
+        print("Processing Short Variants # %s/%s" % (str(count+1),len(total)))
         short_variant_data = extract_data_from_short_variant(short_variant)
+        if short_variant_data['ALT'] is None and short_variant_data['REF'] is None and short_variant_data['cds-effect'] is not None and short_variant_data['gene'] is not None:
+            update_missing_info_from_cds(short_variant_data,reference_file)
         data.append(short_variant_data)
-    df = pd.DataFrame(data)
+    #print(data)
 
+    df = pd.DataFrame(data)
+    df['SOMATIC-or-GERMLINE']=df['SOMATIC-or-GERMLINE'].replace("somatic","Somatic").replace("germline","Germline").replace("unknown","Unclassified")
     df_mnv = df[df['variant-type'] == 'multiple-nucleotide-substitution']
     df_snv = df[df['variant-type'] == 'single-nucleotide-substitution']
     df_indel = df[~df['variant-type'].isin(['multiple-nucleotide-substitution', 'single-nucleotide-substitution'])]

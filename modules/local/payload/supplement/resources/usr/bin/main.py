@@ -59,24 +59,10 @@ def calculate_md5(file_path):
 def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     experimental_strategy = payload['experiment']['experimental_strategy'].lower()
 
-    if f.endswith('.vcf.gz'):
-        file_ext = 'vcf.gz'
-    elif f.endswith('.vcf.gz.tbi'):
-        file_ext = 'vcf.gz.tbi'
+    if f.endswith('xml'):
+        file_ext = 'xml'
     else:
         sys.exit('Error: unknown aligned seq extention: %s' % f)
-
-    variant_type = ''
-    if 'snv' in f:
-        variant_type = 'snv'
-    elif 'indel' in f:
-        variant_type = 'indel'
-    elif 'rearrangement' in f:
-        variant_type = 'sv'
-    elif 'copy_number' in f:
-        variant_type = 'cnv'
-    else:
-        sys.exit('Error: unknown variant type: %s' % f)
 
     new_name = "%s.%s.%s.%s.%s.%s.%s.%s.%s" % (
         payload['studyId'],
@@ -102,12 +88,25 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
     return dst
 
 
-def get_files_info(file_to_upload):
+def get_files_info(file_to_upload, date_str,seq_experiment_analysis_dict,donor_id,sample_id):
+    print(seq_experiment_analysis_dict)
+    print(file_to_upload,donor_id,sample_id)
 
+    file_info = {
+        'fileSize': calculate_size(file_to_upload),
+        'fileMd5sum': calculate_md5(file_to_upload),
+        'fileAccess': 'controlled',
+        'dataType' : "Original submitted XML document",
+        'info': {
+            'data_category': 'Supplement',
+            'data_subtypes': None,
+            'files_in_tgz': []
+        }
+    }
     # Name format for index file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz.tbi
     # Name format for vcf file: MONSTAR-JP.DO264836.SA626657.targeted-seq.20240926.somatic-germline.cnv.vcf.gz
-    if file_to_upload.endswith('.tbi'):
-        data_type = "VCF Index"
+    if file_to_upload.endswith('xml'):
+        data_type = "Supplement"
         # Check for variations in the third-last part (e.g., .snv., .indel., etc.)
         if '.snv.' in file_to_upload:
             data_category = 'Simple Nucleotide Variation'
@@ -119,34 +118,62 @@ def get_files_info(file_to_upload):
             data_category = 'Copy Number Variation'
         else:
             raise ValueError(f"Data type not recognized for file: {file_to_upload}")
-    else:
-        # Non-index file (.vcf.gz)
-        if '.snv.' in file_to_upload:
-            data_type = 'Raw SNV Calls'
-            data_category = 'Simple Nucleotide Variation'
-        elif '.indel.' in file_to_upload:
-            data_type = 'Raw InDel Calls'
-            data_category = 'Simple Nucleotide Variation'
-        elif '.sv.' in file_to_upload:
-            data_type = 'Raw SV Calls'
-            data_category = 'Structural Variation'
-        elif '.cnv.' in file_to_upload:
-            data_type = 'Raw CNV Calls'
-            data_category = 'Copy Number Variation'
-        else:
-            raise ValueError(f"Data type not recognized for file: {file_to_upload}")
+    print([
+    seq_experiment_analysis_dict.get('program_id'),
+    donor_id,
+    sample_id,
+    seq_experiment_analysis_dict['experimental_strategy'],
+    date_str,
+    'tgz']
+    )
+    new_fname = '.'.join([
+    seq_experiment_analysis_dict.get('program_id'),
+    donor_id,
+    sample_id,
+    seq_experiment_analysis_dict['experimental_strategy'],
+    date_str,
+    'tgz'
+    ])
 
-    return {
-        'fileName': os.path.basename(file_to_upload),
-        'fileType': 'VCF' if file_to_upload.split(".")[-2] == 'vcf' else 'TBI',
-        'fileSize': calculate_size(file_to_upload),
-        'fileMd5sum': calculate_md5(file_to_upload),
-        'fileAccess': 'controlled',
-        'dataType': data_type, # update
-        'info': {
-            'data_category': data_category # update
-            }
-    }
+    file_info['fileName'] = new_fname
+    file_info['fileType'] = new_fname.split('.')[-1].upper()
+
+    with tarfile.open(file_to_upload, 'r') as tar:
+      for member in tar.getmembers():
+        file_info['info']['files_in_tgz'].append(member.name)
+
+    new_dir = 'out'
+    try:
+      os.mkdir(new_dir)
+    except FileExistsError:
+      pass
+
+    dst = os.path.join(os.getcwd(), new_dir, new_fname)
+    os.symlink(os.path.abspath(file_to_upload), dst)
+
+
+    return file_info
+
+def prepare_tarball(sampleId, qc_files, tool_list):
+
+    tgz_dir = 'tarball'
+    try:
+      os.mkdir(tgz_dir)
+    except FileExistsError:
+      pass
+
+    files_to_tar = {}
+    for tool in tool_list:
+      if not tool in files_to_tar: files_to_tar[tool] = []
+      for f in sorted(qc_files):
+          files_to_tar[tool].append(f)
+
+    for tool in tool_list:
+      if not files_to_tar[tool]: continue
+      tarfile_name = f"{tgz_dir}/{sampleId}.{tool}.tgz"
+      with tarfile.open(tarfile_name, "w:gz", dereference=True) as tar:
+        for f in files_to_tar[tool]:
+          tar.add(f, arcname=os.path.basename(f))
 
 def main(args):
     with open(args.seq_experiment_analysis, 'r') as f:
@@ -165,14 +192,16 @@ def main(args):
             # Join the first two parts if there are multiple parts
             new_tool = "_".join(new_tool_parts[:2]) if len(new_tool_parts) > 1 else new_tool_parts[0]
             updated_pipeline_info[new_tool]=version
+    if seq_experiment_analysis_dict.get('analysis_tools (tools and versions)'):
+        tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
+        updated_pipeline_info['FoundationOneCDx'] = tools_dict
+        for key, value in updated_pipeline_info.items():
+            for sub_key, sub_value in value.items():
+                value[sub_key] = str(sub_value)
+            updated_pipeline_info[key] = value
+    else:
+        updated_pipeline_info['FoundationOneCDx'] = ""
 
-    tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
-    updated_pipeline_info['FoundationOneCDx'] = tools_dict
-
-    for key, value in updated_pipeline_info.items():
-        for sub_key, sub_value in value.items():
-            value[sub_key] = str(sub_value)
-        updated_pipeline_info[key] = value
 
     payload = {
         'studyId': seq_experiment_analysis_dict.get('program_id'),
@@ -193,14 +222,16 @@ def main(args):
                 }
             }
         ],
-        'analysisType': { 'name': 'variant_calling' },
+        'analysisType': { 'name': 'variant_calling_supplement' },
         'variant_calling_strategy': seq_experiment_analysis_dict.get('variant_calling_strategy'),
         'workflow': {
             'genome_build': 'GRCh38',
             'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
             'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
             'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),
-            'pipeline_info': updated_pipeline_info
+            'pipeline_info': updated_pipeline_info,
+            'run_id':args.wf_run
+            
         },
         'experiment' : {
             'submitter_sequencing_experiment_id': seq_experiment_analysis_dict.get('submitter_sequencing_experiment_id'),
@@ -211,18 +242,51 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "Somatic",  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
+        'variant_class' : seq_experiment_analysis_dict.get('variant_class'),  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
         'files': []
     }
 
+    tmp=payload['variant_class'].split(",")
+    tmp.sort()
+
+    if len(tmp)>1:
+        payload['variant_class']="+".join(tmp)
+    else:
+        payload['variant_class']=tmp[0]
+
+
+
+
+    new_dir = 'out'
+    try:
+        os.mkdir(new_dir)
+    except FileExistsError:
+        pass
+
+    # generate date string
+    date_str = date.today().strftime("%Y%m%d")
+
+    # prepare tarball to include all QC files generated by one tool
+    #sampleId=retrieveClinical(payload['samples'][0]['submitterSampleId'])
+    print(args.sample_id)
+    prepare_tarball(args.sample_id, args.files_to_upload, ["FoundationMedicine"])
+
     # get file of the payload
     date_str = date.today().strftime("%Y%m%d")
-    for f in args.files_to_upload:
-        renamed_file = rename_file(f, payload, seq_experiment_analysis_dict, date_str)
-        payload['files'].append(get_files_info(renamed_file))
+
+    for f in sorted(glob('tarball/*.tgz')):
+      print("WHAT",args.donor_id,args.sample_id)
+      file_info = get_files_info(f, date_str,seq_experiment_analysis_dict,args.donor_id,args.sample_id)
+      payload['files'].append(file_info)
+
+
+    # for f in args.files_to_upload:
+    #     renamed_file = rename_file(f, payload, seq_experiment_analysis_dict, date_str)
+    #     payload['files'].append(get_files_info(renamed_file))
 
     with open("%s.variant_call.payload.json" % str(uuid.uuid4()), 'w') as f:
         f.write(json.dumps(payload, indent=2))
+
 
 
 if __name__ == "__main__":
@@ -237,6 +301,8 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--wf_session", dest="wf_session", required=True, help="workflow session ID")
     parser.add_argument("-b", "--genome_build", dest="genome_build", default="GRCh38", help="Genome build")
     parser.add_argument("-p", "--pipeline_yml", dest="pipeline_yml", required=False, help="Pipeline info in yaml")
+    parser.add_argument("-c", "--sample_id", dest="sample_id", required=True, help="sample_id")
+    parser.add_argument("-d", "--donor_id", dest="donor_id", required=True, help="donor_id")
 
     args = parser.parse_args()
 

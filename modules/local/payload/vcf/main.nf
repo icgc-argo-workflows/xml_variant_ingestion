@@ -11,6 +11,7 @@ process PAYLOAD_VARIANT_CALL {
 
     input:  // input, make update as needed
       tuple val(meta), path(files_to_upload), path(metadata_analysis)
+      tuple val(meta), val(analysis_id)
       path pipeline_yml
 
 
@@ -29,6 +30,7 @@ process PAYLOAD_VARIANT_CALL {
         -r ${workflow.runName} \
         -s "${workflow.sessionId}" \
         -v "${workflow.manifest.version}" \
+        -i "${analysis_id}" \
         $arg_pipeline_yml
 
       cat <<-END_VERSIONS > versions.yml

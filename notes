@@ -1,0 +1,110 @@
+##########################
+
+nextflow \
+run main.nf \
+-profile docker,test,rdpc_qa \
+--api_token ${qa_token} \
+--xml /Users/esu/Desktop/GitHub/icgc-argo-workflows/xml_variant_ingestion/test/data/ORD-0000001-01.xml \
+--experiment_info_tsv /Users/esu/Desktop/GitHub/icgc-argo-workflows/xml_variant_ingestion/test/data/sample_1.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai test/reference/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict
+
+###SA618698
+
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${prod_token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-1026627-01_US0998698.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/rearrangement_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai /PATH/TO/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
+
+###SA618697
+###IDK this rearrangement doesnt make a lot of sense b/c context is lacking
+
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-0886688-01_US0871226.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/rearrangementWoutChimericAnnotation_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai /PATH/TO/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
+
+###SA620245
+
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${prod_token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-0924886-01_US0906338.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/duplication_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai /PATH/TO/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
+
+###A620797
+
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${prod_token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-0925153-01.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/deletion_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai /PATH/TO/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
+
+
+###SA620407
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${prod_token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-0904928-01_US0888009.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/deletionWoutChimericAnnotation_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai test/reference/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
+
+###SA619843
+nextflow \
+run main.nf \
+-profile docker,rdpc \
+--api_token ${prod_token} \
+--xml $HOME/Desktop/jupyter_notebooks/monstar_vcf/monstar1_f1_early_rmdup_20241101/ORD-0976156-01_US0953994.xml \
+--experiment_info_tsv /Users/esu/Desktop/jupyter_notebooks/monstar_vcf/fusion_updated_metadata.tsv \
+--hg19_ref_fa test/reference/hg19.fa \
+--hg19_ref_fai test/reference/hg19.fa.fai \
+--hg19_to_hg38_chain test/reference/hg19ToHg38.over.chain.gz \
+--hg38_ref_fa test/reference/hg38.fa \
+--hg38_ref_fai test/reference/hg38.fa.fai \
+--hg38_ref_dict test/reference/hg38.dict \
+--test_analysis_id NNNNNNNNNNN
