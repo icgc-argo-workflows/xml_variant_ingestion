@@ -105,20 +105,20 @@ def update_missing_info_from_cds(short_variant,reference_file):
 
         if strand==-1:
             ###If strand is reverse, find matching sequence and report as forward strand
-            if record.seq[start:end].upper()==Seq(sequence).upper().reverse_complement():
+            if record.seq[start:end].upper()==Seq(del_sequence).upper().reverse_complement():
                 updated=start-1
                 short_variant['REF']=record.seq[updated:end].upper()
-                short_variant['ALT']=record.seq[updated:end-len(sequence)].upper()
+                short_variant['ALT']=record.seq[updated:end-len(del_sequence)].upper()
             else:
-                print("ErrorD2: Expected sequence does not match reverse complement of provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(sequence).upper().reverse_complement()))
+                print("ErrorD2: Expected sequence does not match reverse complement of provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(del_sequence).upper().reverse_complement()))
         elif strand==1:
             ### If strand is forward, sanity check by finding matching sequence
-            if record.seq[start:end].upper()==Seq(sequence).upper():
+            if record.seq[start:end].upper()==Seq(del_sequence).upper():
                 updated=start-1
                 short_variant['REF']=record.seq[updated:end].upper()
-                short_variant['ALT']=record.seq[updated:end-len(sequence)].upper()
+                short_variant['ALT']=record.seq[updated:end-len(del_sequence)].upper()
             else:
-                print("ErrorD2: Expected sequence does not match provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(sequence).upper()))
+                print("ErrorD2: Expected sequence does not match provided sequence: Original-%s vs Provided-%s" % (record.seq[start:end].upper(),Seq(del_sequence).upper()))
         else:
             print("ErrorD4: RETURN STRAND DOES NOT COMPUTE")
 

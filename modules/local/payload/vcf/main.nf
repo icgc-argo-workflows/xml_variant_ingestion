@@ -11,7 +11,7 @@ process PAYLOAD_VARIANT_CALL {
 
     input:  // input, make update as needed
       tuple val(meta), path(files_to_upload), path(metadata_analysis)
-      tuple val(meta), val(analysis_id)
+      tuple val(meta_ignore) , val(analysis_id)
       path pipeline_yml
 
 

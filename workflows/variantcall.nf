@@ -64,7 +64,7 @@ workflow VARIANTCALL {
 
     // Upload
     if (params.test_analysis_id) {
-        input_analysis_id = params.test_analysis_id
+        input_analysis_id = [[],params.test_analysis_id]
     } else {
        SONG_SCORE_UPLOAD_XML( PAYLOAD_XML_SUPPLEMENT.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
        ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_XML.out.versions)
