@@ -225,7 +225,7 @@ def main(args):
         'analysisType': { 'name': 'variant_calling_supplement' },
         'variant_calling_strategy': seq_experiment_analysis_dict.get('variant_calling_strategy'),
         'workflow': {
-            'genome_build': 'GRCh38',
+            'genome_build': 'GRCh37',
             'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
             'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
             'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),

@@ -80,7 +80,7 @@ def extract_nucleotide(fasta_file, pos):
     return sequence.upper()
 
 # create alt
-def alternative(pos1, pos2,dir):
+def alternative(pos1, pos2,dir,ref):
     dir1 = dir[pos1]
     dir2 = dir[pos2]
     ref_nt = ref[pos1]
@@ -520,7 +520,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
     df_a['POS'] = df_a['POS'].astype(int)
     df_a['ID'] = df['Pos1'].map(junction)
     df_a['REF'] = df['Pos1'].map(ref)
-    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir), axis=1)
+    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir,ref), axis=1)
     df_a['QUAL'] = '.'
     df_a['FILTER'] = '.'
     df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + \
@@ -536,7 +536,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
     df_b['POS'] = df_b['POS'].astype(int)
     df_b['ID'] = df['Pos2'].map(junction)
     df_b['REF'] = df['Pos2'].map(ref)
-    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir), axis=1)
+    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir,ref), axis=1)
     df_b['QUAL'] = '.'
     df_b['FILTER'] = '.'
     df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + \
@@ -705,7 +705,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
     df_a['POS'] = df_a['POS'].astype(int)
     df_a['ID'] = df['Pos1'].map(junction)
     df_a['REF'] = df['Pos1'].map(ref)
-    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir), axis=1)
+    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir,ref), axis=1)
     df_a['QUAL'] = '.'
     df_a['FILTER'] = '.'
     df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + \
@@ -721,7 +721,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
     df_b['POS'] = df_b['POS'].astype(int)
     df_b['ID'] = df['Pos2'].map(junction)
     df_b['REF'] = df['Pos2'].map(ref)
-    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir), axis=1)
+    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir,ref), axis=1)
     df_b['QUAL'] = '.'
     df_b['FILTER'] = '.'
     df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + \
@@ -847,7 +847,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
     df_a['POS'] = df_a['POS'].astype(int)
     df_a['ID'] = df['Pos1'].map(junction)
     df_a['REF'] = df['Pos1'].map(ref)
-    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir), axis=1)
+    df_a['ALT'] = df.apply(lambda row: alternative(row['Pos1'], row['Pos2'],dir,ref), axis=1)
     df_a['QUAL'] = '.'
     df_a['FILTER'] = '.'
     df_a['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos2'].map(junction) + \
@@ -863,7 +863,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
     df_b['POS'] = df_b['POS'].astype(int)
     df_b['ID'] = df['Pos2'].map(junction)
     df_b['REF'] = df['Pos2'].map(ref)
-    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir), axis=1)
+    df_b['ALT'] = df.apply(lambda row: alternative(row['Pos2'], row['Pos1'],dir,ref), axis=1)
     df_b['QUAL'] = '.'
     df_b['FILTER'] = '.'
     df_b['INFO'] = 'SVTYPE=BND;MATEID=' + df['Pos1'].map(junction) + \

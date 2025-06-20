@@ -27,6 +27,7 @@ import argparse
 import re
 from datetime import date
 from Bio import SeqIO
+from Bio.Seq import Seq
 import requests
 
 def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
@@ -122,6 +123,8 @@ def update_missing_info_from_cds(short_variant,reference_file):
         else:
             print("ErrorD4: RETURN STRAND DOES NOT COMPUTE")
 
+        print("######",del_sequence,short_variant['REF'],short_variant['ALT'])
+
     elif "ins" in short_variant.get('cds-effect'):
         ###Populate initial variables
         start=int(short_variant.get("POS"))
@@ -142,7 +145,7 @@ def update_missing_info_from_cds(short_variant,reference_file):
         if strand==-1:
             updated=start
             short_variant['REF']=record.seq[updated:end].upper()
-            short_variant['ALT']=added_sequence+record.seq[updated:end].upper()
+            short_variant['ALT']=record.seq[updated:end].upper()+added_sequence
         elif strand==1:
             updated=start
             short_variant['REF']=record.seq[updated:end].upper()
@@ -151,9 +154,12 @@ def update_missing_info_from_cds(short_variant,reference_file):
             print("ERRORI2: UNKNOWN STRAND FOUND IN %s" % (gene) )
             exit(1)
     elif ">" in short_variant.get('cds-effect'):
-
-        short_variant['REF']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0]
-        short_variant['ALT']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[1]
+        if strand==1:
+            short_variant['REF']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0]
+            short_variant['ALT']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[1]
+        else:
+            short_variant['REF']=Seq(re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0]).reverse_complement()
+            short_variant['ALT']=Seq(re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[1]).reverse_complement()
         ### Label single or multi based on length of affected REF sequence
         short_variant['variant-type']= 'multiple-nucleotide-substitution' if len(re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0])>1 else 'single-nucleotide-substitution'
     else:
@@ -292,13 +298,17 @@ def main():
     total=root.findall('.//short-variant')
     for count,short_variant in enumerate(total):
         print("Processing Short Variants # %s/%s" % (str(count+1),len(total)))
+        #print(short_variant)
         short_variant_data = extract_data_from_short_variant(short_variant)
         if short_variant_data['ALT'] is None and short_variant_data['REF'] is None and short_variant_data['cds-effect'] is not None and short_variant_data['gene'] is not None:
             update_missing_info_from_cds(short_variant_data,reference_file)
         data.append(short_variant_data)
+        print(short_variant.get('REF'),short_variant.get('ALT'),short_variant.get('cds-effect'))
+        print(short_variant_data)
     #print(data)
 
     df = pd.DataFrame(data)
+    #print(df)
     df['SOMATIC-or-GERMLINE']=df['SOMATIC-or-GERMLINE'].replace("somatic","Somatic").replace("germline","Germline").replace("unknown","Unclassified")
     df_mnv = df[df['variant-type'] == 'multiple-nucleotide-substitution']
     df_snv = df[df['variant-type'] == 'single-nucleotide-substitution']
@@ -311,7 +321,7 @@ def main():
     df_snvs = split_MNV_SNV(df_mnv)
 
     # Merge df_snvs with df_snv
-    df_snv_total = pd.concat([df_snv, df_snvs]).reset_index(drop=True)
+    df_snv_total = pd.concat([df_snv, df_snvs]).reset_index(drop=True).query("REF!=ALT")
 
     # Process the DataFrame
     df_indel_processed,chrs_indel = process_dataframe(df_indel, chr_ordered)    # indel

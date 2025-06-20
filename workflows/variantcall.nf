@@ -90,161 +90,162 @@ workflow VARIANTCALL {
                             .map{ path -> [ [id: 'chain'], path ] }
 
     // SNV \\
-    // lift over
-    PICARD_LIFTOVERVCF_SNV (
-        XML_VCF.out.snv_vcf,
-        hg38_ref_dict,
-        hg38_ref_ch,
-        hg19_to_hg38_chain_ch
-    )
-    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_SNV.out.versions)
+    if ("SNV" in params.vcf){
+        // lift over
+        PICARD_LIFTOVERVCF_SNV (
+            XML_VCF.out.snv_vcf,
+            hg38_ref_dict,
+            hg38_ref_ch,
+            hg19_to_hg38_chain_ch
+        )
+        ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_SNV.out.versions)
 
-    //Payload Generation
-    PICARD_LIFTOVERVCF_SNV.out.vcf_lifted
-    .combine(PICARD_LIFTOVERVCF_SNV.out.vcf_lifted_index)
-    .combine(meta_ch)
-    .combine(PREP_META.out.updated_experiment_info_tsv)
-    .map{
-        metaA, vcf, metaB, index, meta, metadata_analysis ->
-        [
-            meta, [vcf, index], metadata_analysis
-        ]
-    }.set{vcf_and_index_snv}
+        //Payload Generation
+        PICARD_LIFTOVERVCF_SNV.out.vcf_lifted
+        .combine(PICARD_LIFTOVERVCF_SNV.out.vcf_lifted_index)
+        .combine(meta_ch)
+        .combine(PREP_META.out.updated_experiment_info_tsv)
+        .map{
+            metaA, vcf, metaB, index, meta, metadata_analysis ->
+            [
+                meta, [vcf, index], metadata_analysis
+            ]
+        }.set{vcf_and_index_snv}
 
-    PAYLOAD_VARIANT_CALL_SNV (
-        vcf_and_index_snv,
-        input_analysis_id,
-        Channel.empty()
-        .mix(XML_VCF.out.versions)
-        .mix(PICARD_LIFTOVERVCF_SNV.out.versions)
-        .collectFile(name: 'collated_versions.yml')
-    )
-    ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_SNV.out.versions)
+        PAYLOAD_VARIANT_CALL_SNV (
+            vcf_and_index_snv,
+            input_analysis_id,
+            Channel.empty()
+            .mix(XML_VCF.out.versions)
+            .mix(PICARD_LIFTOVERVCF_SNV.out.versions)
+            .collectFile(name: 'collated_versions.yml')
+        )
+        ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_SNV.out.versions)
 
-    // Upload
-    if (!params.test_analysis_id) {
-        SONG_SCORE_UPLOAD_SNV(PAYLOAD_VARIANT_CALL_SNV.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
-        ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_SNV.out.versions)
+        // Upload
+        if (!params.test_analysis_id) {
+            SONG_SCORE_UPLOAD_SNV(PAYLOAD_VARIANT_CALL_SNV.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
+            ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_SNV.out.versions)
+        }
     }
     // INDEL \\
-    // lift over
-    PICARD_LIFTOVERVCF_INDEL (
-        XML_VCF.out.indel_vcf,
-        hg38_ref_dict,
-        hg38_ref_ch,
-        hg19_to_hg38_chain_ch
-    )
-    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_INDEL.out.versions)
+    if ("INDEL" in params.vcf){
+        // lift over
+        PICARD_LIFTOVERVCF_INDEL (
+            XML_VCF.out.indel_vcf,
+            hg38_ref_dict,
+            hg38_ref_ch,
+            hg19_to_hg38_chain_ch
+        )
+        ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_INDEL.out.versions)
 
-    //Payload Generation
-    PICARD_LIFTOVERVCF_INDEL.out.vcf_lifted
-    .combine(PICARD_LIFTOVERVCF_INDEL.out.vcf_lifted_index)
-    .combine(meta_ch)
-    .combine(PREP_META.out.updated_experiment_info_tsv)
-    .map{
-        metaA, vcf, metaB, index, meta, metadata_analysis ->
-        [
-            meta, [vcf, index], metadata_analysis
-        ]
-    }.set{vcf_and_index_indel}
+        //Payload Generation
+        PICARD_LIFTOVERVCF_INDEL.out.vcf_lifted
+        .combine(PICARD_LIFTOVERVCF_INDEL.out.vcf_lifted_index)
+        .combine(meta_ch)
+        .combine(PREP_META.out.updated_experiment_info_tsv)
+        .map{
+            metaA, vcf, metaB, index, meta, metadata_analysis ->
+            [
+                meta, [vcf, index], metadata_analysis
+            ]
+        }.set{vcf_and_index_indel}
 
-    PAYLOAD_VARIANT_CALL_INDEL (
-        vcf_and_index_indel,
-        input_analysis_id,
-        Channel.empty()
-        .mix(XML_VCF.out.versions)
-        .mix(PICARD_LIFTOVERVCF_INDEL.out.versions)
-        .collectFile(name: 'collated_versions.yml')
-    )
-    ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_INDEL.out.versions)
+        PAYLOAD_VARIANT_CALL_INDEL (
+            vcf_and_index_indel,
+            input_analysis_id,
+            Channel.empty()
+            .mix(XML_VCF.out.versions)
+            .mix(PICARD_LIFTOVERVCF_INDEL.out.versions)
+            .collectFile(name: 'collated_versions.yml')
+        )
+        ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_INDEL.out.versions)
 
-    // Upload
-    if (!params.test_analysis_id) {
-    SONG_SCORE_UPLOAD_INDEL(PAYLOAD_VARIANT_CALL_INDEL.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
-    ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_INDEL.out.versions)
+        // Upload
+        if (!params.test_analysis_id) {
+        SONG_SCORE_UPLOAD_INDEL(PAYLOAD_VARIANT_CALL_INDEL.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
+        ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_INDEL.out.versions)
+        }
     }
     // Rearrangement \\
-    // lift over
-    PICARD_LIFTOVERVCF_RA (
-        XML_VCF.out.rearrangement_vcf,
-        hg38_ref_dict,
-        hg38_ref_ch,
-        hg19_to_hg38_chain_ch
-    )
-    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_RA.out.versions)
+    if ("RA" in params.vcf){
+        // lift over
+        PICARD_LIFTOVERVCF_RA (
+            XML_VCF.out.rearrangement_vcf,
+            hg38_ref_dict,
+            hg38_ref_ch,
+            hg19_to_hg38_chain_ch
+        )
+        ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_RA.out.versions)
 
-    //Payload Generation
-    PICARD_LIFTOVERVCF_RA.out.vcf_lifted
-    .combine(PICARD_LIFTOVERVCF_RA.out.vcf_lifted_index)
-    .combine(meta_ch)
-    .combine(PREP_META.out.updated_experiment_info_tsv)
-    .map{
-        metaA, vcf, metaB, index, meta, metadata_analysis ->
-        [
-            meta, [vcf, index], metadata_analysis
-        ]
-    }.set{vcf_and_index_ra}
+        //Payload Generation
+        PICARD_LIFTOVERVCF_RA.out.vcf_lifted
+        .combine(PICARD_LIFTOVERVCF_RA.out.vcf_lifted_index)
+        .combine(meta_ch)
+        .combine(PREP_META.out.updated_experiment_info_tsv)
+        .map{
+            metaA, vcf, metaB, index, meta, metadata_analysis ->
+            [
+                meta, [vcf, index], metadata_analysis
+            ]
+        }.set{vcf_and_index_ra}
 
-    PAYLOAD_VARIANT_CALL_RA (
-        vcf_and_index_ra,
-        input_analysis_id,
-        Channel.empty()
-        .mix(XML_VCF.out.versions)
-        .mix(PICARD_LIFTOVERVCF_RA.out.versions)
-        .collectFile(name: 'collated_versions.yml')
-    )
-    ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_RA.out.versions)
+        PAYLOAD_VARIANT_CALL_RA (
+            vcf_and_index_ra,
+            input_analysis_id,
+            Channel.empty()
+            .mix(XML_VCF.out.versions)
+            .mix(PICARD_LIFTOVERVCF_RA.out.versions)
+            .collectFile(name: 'collated_versions.yml')
+        )
+        ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_RA.out.versions)
 
-    // // Upload
-    if (!params.test_analysis_id) {
-    SONG_SCORE_UPLOAD_RA(PAYLOAD_VARIANT_CALL_RA.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
-    ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_RA.out.versions)
+        // // Upload
+        if (!params.test_analysis_id) {
+        SONG_SCORE_UPLOAD_RA(PAYLOAD_VARIANT_CALL_RA.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
+        ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_RA.out.versions)
+        }
     }
-
     // Copy Number \\
-    // lift over
-    PICARD_LIFTOVERVCF_CN (
-        XML_VCF.out.copy_number_vcf,
-        hg38_ref_dict,
-        hg38_ref_ch,
-        hg19_to_hg38_chain_ch
-    )
-    ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
+    if ("CNV" in params.vcf){
+        // lift over
+        PICARD_LIFTOVERVCF_CN (
+            XML_VCF.out.copy_number_vcf,
+            hg38_ref_dict,
+            hg38_ref_ch,
+            hg19_to_hg38_chain_ch
+        )
+        ch_versions = ch_versions.mix(PICARD_LIFTOVERVCF_CN.out.versions)
 
-    //Payload Generation
-    PICARD_LIFTOVERVCF_CN.out.vcf_lifted
-    .combine(PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index)
-    .combine(meta_ch)
-    .combine(PREP_META.out.updated_experiment_info_tsv)
-    .map{
-        metaA, vcf, metaB, index, meta, metadata_analysis ->
-        [
-            meta, [vcf, index], metadata_analysis
-        ]
-    }.set{vcf_and_index_cn}
+        //Payload Generation
+        PICARD_LIFTOVERVCF_CN.out.vcf_lifted
+        .combine(PICARD_LIFTOVERVCF_CN.out.vcf_lifted_index)
+        .combine(meta_ch)
+        .combine(PREP_META.out.updated_experiment_info_tsv)
+        .map{
+            metaA, vcf, metaB, index, meta, metadata_analysis ->
+            [
+                meta, [vcf, index], metadata_analysis
+            ]
+        }.set{vcf_and_index_cn}
 
-    PAYLOAD_VARIANT_CALL_CN (
-        vcf_and_index_cn,
-        input_analysis_id,
-        Channel.empty()
-        .mix(XML_VCF.out.versions)
-        .mix(PICARD_LIFTOVERVCF_CN.out.versions)
-        .collectFile(name: 'collated_versions.yml')
-    )
-    ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_CN.out.versions)
+        PAYLOAD_VARIANT_CALL_CN (
+            vcf_and_index_cn,
+            input_analysis_id,
+            Channel.empty()
+            .mix(XML_VCF.out.versions)
+            .mix(PICARD_LIFTOVERVCF_CN.out.versions)
+            .collectFile(name: 'collated_versions.yml')
+        )
+        ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_CN.out.versions)
 
-    // Upload
-    if (!params.test_analysis_id) {
-    SONG_SCORE_UPLOAD_CN(PAYLOAD_VARIANT_CALL_CN.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
-    ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_CN.out.versions)
+        // Upload
+        if (!params.test_analysis_id) {
+        SONG_SCORE_UPLOAD_CN(PAYLOAD_VARIANT_CALL_CN.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
+        ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_CN.out.versions)
+        }
     }
-
-    emit:
-
-     versions = ch_versions                 // channel: [ path(versions.yml) ]
-
 }
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     THE END
