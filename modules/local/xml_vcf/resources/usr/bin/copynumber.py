@@ -69,7 +69,7 @@ def extract_data_from_cna(cna):
         'type': cna.get('type'),
         'status': cna.get('status'),
         'equivocal': cna.get('equivocal'),
-        'analytical-only': cna.get('analytical-only')
+        'analytical-only': cna.get('analytical-only') if cna.get('analytical-only') else "false"
     }
 
 def chr_pos_order(chr_list): # this code is specific for hg19 genome assembly it sort chr based on "chr1, chr2, chrX, chrY, chrUn_, chrM"
@@ -192,12 +192,13 @@ def main():
 
     # Extract information from xml
     data = []
-
+    total=root.findall('.//copy-number-alteration')
     for cna in root.findall('.//copy-number-alteration'):
+        print("Processing CNAs # %s/%s" % (str(len(total)+1),len(total)))
         cna_data = extract_data_from_cna(cna)
         data.append(cna_data)
     df = pd.DataFrame(data)
-    print(df)
+    #print(df)
 
     # Get chromosome order information
     chr_ordered = chr_pos_order(list(chr_dic))

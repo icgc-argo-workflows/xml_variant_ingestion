@@ -5,7 +5,8 @@ process XML_VCF {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/biocontainers/pandas' :
-        'docker.io/gfeng2023/pandas-pyfaidx:latest' }"
+        'docker.io/edsu7/custom-python-packages:latest' }"
+        // 'docker.io/gfeng2023/pandas-pyfaidx:latest' }"
         // 'biocontainers/pandas:2.2.1' }"
 
 
@@ -41,7 +42,8 @@ process XML_VCF {
     if [ -n "\$shortVariantOutput" ]; then
         shortvariant.py \\
             -i ${xml} \\
-            -r ${hg19_fai} \\
+            -r ${hg19_fa} \\
+            -r2 ${hg19_fai} \\
             -o1 ${prefix}.snv.vcf \\
             -o2 ${prefix}.indel.vcf
     fi

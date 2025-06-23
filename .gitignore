@@ -8,3 +8,10 @@ testing*
 out/
 *.fa
 *.fa.gz
+tarball/SA619843.FoundationMedicine.tgz
+modules/local/xml_vcf/resources/usr/bin/tmp_rearrangement.py
+testE2.rearrangement.vcf
+tmp
+tmp.py
+c1c74b92-c98a-447d-ad8e-00c74d55e7b3.variant_call.payload.json
+21b44389-b13c-4b6e-92fc-3a837f55fd30.variant_call.payload.json

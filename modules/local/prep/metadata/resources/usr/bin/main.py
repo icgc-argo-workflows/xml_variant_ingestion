@@ -99,15 +99,15 @@ def get_clinical(metadata,clinical_url,api_token):
 
     ### Check program exists first
 
-    headers={"accept":"*/*","Authorization":"Bearer %s" % (api_token)}
-    endpoint="%s/clinical/program/%s/donors" % (clinical_url,metadata.get('program_id'))
-    response=requests.get(endpoint,headers=headers)
+    # headers={"accept":"*/*","Authorization":"Bearer %s" % (api_token)}
+    # endpoint="%s/clinical/program/%s/donors" % (clinical_url,metadata.get('program_id'))
+    # response=requests.get(endpoint,headers=headers)
 
-    if response.status_code==200:
-        if len(response.text)==0:
-            sys.exit("Project %s does not exist or no samples have been registered" % (metadata.get('program_id')))
-    else:
-        sys.exit("Unable to fetch. Status code : %s" % (str(response.status_code)))
+    # if response.status_code==200:
+    #     if len(response.text)==0:
+    #         sys.exit("Project %s does not exist or no samples have been registered" % (metadata.get('program_id')))
+    # else:
+    #     sys.exit("E1 - Unable to fetch. Status code %s : %s" % (endpoint,str(response.status_code)))
 
 
     ###Populate ARGO IDs
@@ -121,7 +121,7 @@ def get_clinical(metadata,clinical_url,api_token):
         if response.status_code==404:
             sys.exit("submitter_%s_id:'%s' was not found in project:'%s'. Verify sample has been registered." % (field,metadata.get("submitter_"+field+"_id"),metadata.get('program_id')))
         elif response.status_code!=200:
-            sys.exit("Unable to fetch. Status code : %s" % (str(response.status_code)))
+            sys.exit("E2 - Unable to fetch. Status code %s : %s" % (endpoint,str(response.status_code)))
         else:
             return_metadata[field+"_id"]=response.content.decode("utf-8")
 
@@ -129,7 +129,7 @@ def get_clinical(metadata,clinical_url,api_token):
     endpoint="%s/clinical/program/%s/donor/%s" % (clinical_url,metadata.get('program_id'),return_metadata.get('donor_id'))
     response=requests.get(endpoint,headers=headers)
     if response.status_code!=200:
-        sys.exit("Unable to fetch. Status code : %s" % (str(response.status_code)))
+        sys.exit("E3 - Unable to fetch. Status code %s : %s" % (endpoint,str(response.status_code)))
     else:
         return_metadata['gender']=response.json()['gender']
         return_metadata['submitter_donor_id']=response.json()['submitterId']
@@ -194,7 +194,7 @@ def check_study_exists(metadata,submission_song_url):
     if response.status_code==404:
         sys.exit("Program %s does not exist in SONG. Please verify program code is correct. Otherwise contact DCC-admin for help to troubleshoot." % (metadata.get('program_id')))
     elif response.status_code!=200:
-        sys.exit("Unable to fetch. Status code : %s" % (str(response.status_code)))
+        sys.exit("E4 - Unable to fetch. Status code %s : %s" % (endpoint,str(response.status_code)))
     else:
         return True
 
@@ -206,7 +206,7 @@ def check_analysis_exists(metadata,submission_song_url):
     response=requests.get(endpoint,headers=headers)
 
     if response.status_code!=200:
-        sys.exit("Unable to fetch. Status code : %s" % (str(response.status_code)))
+        sys.exit("E5 - Unable to fetch. Status code %s : %s" % (endpoint,str(response.status_code)))
     elif response.status_code==200:
         ### If first submission of sample, query will return empty list
         if len(response.json())==0:

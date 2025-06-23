@@ -165,15 +165,18 @@ def main(args):
             # Join the first two parts if there are multiple parts
             new_tool = "_".join(new_tool_parts[:2]) if len(new_tool_parts) > 1 else new_tool_parts[0]
             updated_pipeline_info[new_tool]=version
+    if seq_experiment_analysis_dict.get('analysis_tools (tools and versions)'):
+        tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
+        updated_pipeline_info['FoundationOneCDx'] = tools_dict
+        for key, value in updated_pipeline_info.items():
+            for sub_key, sub_value in value.items():
+                value[sub_key] = str(sub_value)
+            updated_pipeline_info[key] = value
+    else:
+        updated_pipeline_info['FoundationOneCDx'] = ""
 
-    tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
-    updated_pipeline_info['FoundationOneCDx'] = tools_dict
-
-    for key, value in updated_pipeline_info.items():
-        for sub_key, sub_value in value.items():
-            value[sub_key] = str(sub_value)
-        updated_pipeline_info[key] = value
-
+    variant_class=seq_experiment_analysis_dict.get('variant_class').split(",")
+    variant_class.sort()
     payload = {
         'studyId': seq_experiment_analysis_dict.get('program_id'),
         'samples': [
@@ -197,10 +200,11 @@ def main(args):
         'variant_calling_strategy': seq_experiment_analysis_dict.get('variant_calling_strategy'),
         'workflow': {
             'genome_build': 'GRCh38',
-            'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
-            'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
-            'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),
-            'pipeline_info': updated_pipeline_info
+            'workflow_name': args.wf_name.replace(" ",""),
+            'workflow_version': args.wf_version,
+            'workflow_short_name': args.wf_name.replace(" ",""),
+            'pipeline_info': updated_pipeline_info,
+            'inputs' : [{ "analysis_type": "variant_calling_supplement","tumour_analysis_id": args.analysis_id}]
         },
         'experiment' : {
             'submitter_sequencing_experiment_id': seq_experiment_analysis_dict.get('submitter_sequencing_experiment_id'),
@@ -211,7 +215,7 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "Somatic",  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
+        'variant_class' : "+".join(variant_class),  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
         'files': []
     }
 
@@ -237,6 +241,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--wf_session", dest="wf_session", required=True, help="workflow session ID")
     parser.add_argument("-b", "--genome_build", dest="genome_build", default="GRCh38", help="Genome build")
     parser.add_argument("-p", "--pipeline_yml", dest="pipeline_yml", required=False, help="Pipeline info in yaml")
+    parser.add_argument("-i", "--analysis_id", dest="analysis_id", required=False, help="Analysis Id")
 
     args = parser.parse_args()
 
