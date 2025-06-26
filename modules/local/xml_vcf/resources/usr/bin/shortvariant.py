@@ -155,7 +155,7 @@ def update_missing_info_from_cds(short_variant,reference_file):
             exit(1)
     elif ">" in short_variant.get('cds-effect'):
         ###Query for strand information from API
-        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14")
         url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
         response=requests.get(url)
 

@@ -66,7 +66,7 @@ def create_vcf_header(date_str, chrs, chr_dic, input_file_name):
 def custom_sort_key(item):
     parts = item.split(':')
     try:
-        chr_num = int(parts[0].replace('chr', ''))
+        chr_num = str(parts[0].replace('chr', ''))
         coord = int(parts[1])
         return (chr_num, coord)
     except (ValueError, IndexError):
@@ -852,7 +852,8 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
         dir[rearrangement_data['Pos2']] = rearrangement_data['pos2_strand']
 
     data.append(rearrangement_data)
-
+    print(junc)
+    print(custom_sort_key)
     sorted_junc = sorted(junc, key=custom_sort_key) # sort junction based on first chr, than pos
 
     # create a dictionary, naming bnd_# for all junctions based on sorted order
