@@ -1,5 +1,5 @@
 # Use a base image with Python pre-installed (assumed, since pip is used later)
-FROM python:3.12.3-slim
+FROM --platform=linux/amd64 python:3.12.3-slim
 
 # Set environment variable for consistent locale and encoding behavior
 ENV LANG=C.UTF-8

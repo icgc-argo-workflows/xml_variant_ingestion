@@ -89,6 +89,7 @@ workflow VARIANTCALL {
     hg19_to_hg38_chain_ch = Channel.fromPath(params.hg19_to_hg38_chain, checkIfExists: true)
                             .map{ path -> [ [id: 'chain'], path ] }
 
+    
     // SNV \\
     if ("SNV" in params.vcf){
         // lift over
@@ -123,7 +124,7 @@ workflow VARIANTCALL {
         ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_SNV.out.versions)
 
         // Upload
-        if (!params.test_analysis_id) {
+        if ("UPLOAD" in params.vcf) {
             SONG_SCORE_UPLOAD_SNV(PAYLOAD_VARIANT_CALL_SNV.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
             ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_SNV.out.versions)
         }
@@ -162,7 +163,7 @@ workflow VARIANTCALL {
         ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_INDEL.out.versions)
 
         // Upload
-        if (!params.test_analysis_id) {
+        if ("UPLOAD" in params.vcf)  {
         SONG_SCORE_UPLOAD_INDEL(PAYLOAD_VARIANT_CALL_INDEL.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
         ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_INDEL.out.versions)
         }
@@ -201,7 +202,7 @@ workflow VARIANTCALL {
         ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_RA.out.versions)
 
         // // Upload
-        if (!params.test_analysis_id) {
+        if ("UPLOAD" in params.vcf)  {
         SONG_SCORE_UPLOAD_RA(PAYLOAD_VARIANT_CALL_RA.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
         ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_RA.out.versions)
         }
@@ -240,7 +241,7 @@ workflow VARIANTCALL {
         ch_versions = ch_versions.mix(PAYLOAD_VARIANT_CALL_CN.out.versions)
 
         // Upload
-        if (!params.test_analysis_id) {
+        if ("UPLOAD" in params.vcf)  {
         SONG_SCORE_UPLOAD_CN(PAYLOAD_VARIANT_CALL_CN.out.payload_files) // [val(meta), path("*.payload.json"), [path(CRAM),path(CRAI)]
         ch_versions = ch_versions.mix(SONG_SCORE_UPLOAD_CN.out.versions)
         }

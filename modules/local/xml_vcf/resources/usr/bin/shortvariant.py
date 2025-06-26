@@ -154,6 +154,17 @@ def update_missing_info_from_cds(short_variant,reference_file):
             print("ERRORI2: UNKNOWN STRAND FOUND IN %s" % (gene) )
             exit(1)
     elif ">" in short_variant.get('cds-effect'):
+        ###Query for strand information from API
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126")
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        response=requests.get(url)
+
+        if response.status_code!=200:
+            print("ERRORD1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower())
+            exit(1)
+            
+        strand=response.json()['gene']['strand']
+
         if strand==1:
             short_variant['REF']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[0]
             short_variant['ALT']=re.findall("[a-zA-Z]+",short_variant.get('cds-effect'))[1]
