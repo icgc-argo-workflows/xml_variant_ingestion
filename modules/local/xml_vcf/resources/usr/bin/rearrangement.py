@@ -147,16 +147,16 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                 description=rearrangement[0][0].get('description')
                 ###Use chimeric description where if 3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)
                 if re.findall("3'|5'",description)[0]=="5'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
                 elif re.findall("3'|5'",description)[0]=="3'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
 
                 if "upstream" in description or "downstream" in description:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="5'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="3'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene')
@@ -182,31 +182,32 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['pos2_strand']="+" if responseB.json()['gene']['strand']==1 else "-"
  
                 ###Using strand info return 5' or 3' positions
-                if re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]<re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]:
+                if re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]<re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]:
                     if rearrangement_data['pos1_strand']=="+":
-                        rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                        rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
                     else:
-                        rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                        rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
 
 
                     if rearrangement_data['pos2_strand']=="+":
-                        rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                        rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                     else:
-                        rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                        rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 else:
                     if rearrangement_data['pos1_strand']=="+":
-                        rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                        rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
                     else:
-                        rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                        rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
 
 
                     if rearrangement_data['pos2_strand']=="+":
-                        rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                        rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
                     else:
-                        rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                        rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY - SWAP THEM SO WE ALWAYS WRITE SMALLEST COORD FIRST
-    if int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1]):
+    ###print(rearrangement_data)
+    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[0]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[0]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
@@ -287,16 +288,16 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
                 description=rearrangement[0][0].get('description')
                 ###Use chimeric description where if 3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)
                 if re.findall("3'|5'",description)[1]=="5'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
                 elif re.findall("3'|5'",description)[1]=="3'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
 
                 if "upstream" in description or "downstream" in description:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="5'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="3'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene')
@@ -323,18 +324,18 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
 
                 ###Using strand info return 5' or 3' positions
                 if rearrangement_data['pos1_strand']=="+":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
                 else:
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
 
 
                 if rearrangement_data['pos2_strand']=="+":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 else:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY:
-    if int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1]):
+    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
@@ -410,21 +411,22 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
 def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
     ###For whatever reason coordinates are reported as "chrN:N-N+1" or "chrN", if the prior....which set of coordinates to use?
     if "-" in rearrangement_data.get('Pos1'):
+        print(rearrangement_data)
         if rearrangement_data.get('targeted-gene') and rearrangement_data.get('other-gene'):
             if len(rearrangement)>0:
                 description=rearrangement[0][0].get('description')
                 ###Use chimeric description where if 3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)
                 if re.findall("3'|5'",description)[1]=="5'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
                 elif re.findall("3'|5'",description)[1]=="3'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
 
                 if "upstream" in description or "downstream" in description:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="5'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 elif re.findall("3'|5'",description)[2]=="3'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene')
@@ -451,18 +453,19 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
 
                 ###Using strand info return 5' or 3' positions
                 if rearrangement_data['pos1_strand']=="+":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
                 else:
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
 
 
                 if rearrangement_data['pos2_strand']=="+":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 else:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
+
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY:
-    if int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1]):
+    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
@@ -496,6 +499,27 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
                 exit(1)
     else:
         ### If we don't have breakpoint annotation, auto assign the strand
+        gene=rearrangement.get('targeted-gene')
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        responseA=requests.get(url)
+
+        if responseA.status_code!=200:
+            print("ERROR_GF1: Unable to ping %s" % url)
+            exit(1)
+        rearrangement_data['pos1_strand']="+" if responseA.json()['gene']['strand']==1 else "-"
+
+        ###Assign arbitary strand if partner gene is missing
+        if rearrangement.get('other_gene')=='N/A':
+            rearrangement_data['pos2_strand']="+"
+        else:
+            gene=rearrangement.get('other-gene')
+            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+            responseB=requests.get(url)
+
+            if responseB.status_code!=200:
+                print("ERROR_GF2: Unable to ping %s" % url)
+                exit(1)
+            rearrangement_data['pos2_strand']="+" if responseB.json()['gene']['strand']==1 else "-"
         dir[rearrangement_data['Pos1']] = rearrangement_data['pos1_strand']
         dir[rearrangement_data['Pos2']] = rearrangement_data['pos2_strand']
 
@@ -570,18 +594,18 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
                 description=rearrangement[0][0].get('description')
                 ###Use chimeric description where if 3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)
                 if re.findall("3'|5'",description)[1]=="5'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
-                    complement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1])-1)
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
+                    complement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1])-1)
                 elif re.findall("3'|5'",description)[1]=="3'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
-                    complement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos1'])[-1])+1)
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
+                    complement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1])+1)
 
                 if re.findall("3'|5'",description)[2]=="5'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
-                    complement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1])-1)
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
+                    complement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1])-1)
                 elif re.findall("3'|5'",description)[2]=="3'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
-                    complement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos2'])[-1])+1)
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
+                    complement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1])+1)
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene')
@@ -611,22 +635,22 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
 
                 ###Using strand info return 5' or 3' positions
                 if rearrangement_data['pos1_strand']=="+":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
-                    complement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos1'])[-1])+1)
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
+                    complement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1])+1)
                 else:
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
-                    complement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1])-1)
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
+                    complement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1])-1)
 
 
                 if rearrangement_data['pos2_strand']=="+":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
-                    complement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1])-1)
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
+                    complement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1])-1)
                 else:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
-                    complement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9]+",rearrangement_data['Pos2'])[-1])+1)
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
+                    complement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1])+1)
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY:
-    if int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1]):
+    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
@@ -739,19 +763,20 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
     if "-" in rearrangement_data.get('Pos1'):
         if rearrangement_data.get('targeted-gene') and rearrangement_data.get('other-gene'):
             if len(rearrangement)>0:
-                description=rearrangement[0][0].get('description')
+                print(rearrangement_data)
+                description=rearrangement[0][0].get('chimeric-description') if rearrangement[0][0].get('chimeric-description') else rearrangement[0][0].get('description')
                 ###Use chimeric description where if 3'-FGFR1(x18-3*)-5':FGFR1-upstream(20kB)
                 if re.findall("3'|5'",description)[1]=="5'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
                 elif re.findall("3'|5'",description)[1]=="3'":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
 
                 if "upstream" in description or "downstream" in description:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
-                elif re.findall("3'|5'",description)[2]=="5'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
-                elif re.findall("3'|5'",description)[2]=="3'":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
+                elif re.findall("3'|5'",description)[1]=="5'":
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
+                elif re.findall("3'|5'",description)[1]=="3'":
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene')
@@ -778,18 +803,18 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
 
                 ###Using strand info return 5' or 3' positions
                 if rearrangement_data['pos1_strand']=="+":
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[-1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[-1]
                 else:
-                    rearrangement_data['Pos1']=re.findall("^chr[0-9]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos1'])[1]
+                    rearrangement_data['Pos1']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos1'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]
 
 
                 if rearrangement_data['pos2_strand']=="+":
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 else:
-                    rearrangement_data['Pos2']=re.findall("^chr[0-9]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9]+",rearrangement_data['Pos2'])[-1]
+                    rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY:
-    if int(re.findall("[0-9]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[1]):
+    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
