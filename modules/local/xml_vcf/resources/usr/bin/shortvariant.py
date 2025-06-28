@@ -92,7 +92,7 @@ def update_missing_info_from_cds(short_variant,reference_file):
         start=int(short_variant.get("POS"))
         del_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
         end=start+len(del_sequence)
-        gene=short_variant.get('gene').replace("MLL2","KMT2D")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
 
         ###Query for strand information from API
         url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
@@ -130,7 +130,7 @@ def update_missing_info_from_cds(short_variant,reference_file):
         start=int(short_variant.get("POS"))
         added_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
         end=start+1
-        gene=short_variant.get('gene').replace("MLL2","KMT2D")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
 
         ###Query for strand information from API
         url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
@@ -155,7 +155,7 @@ def update_missing_info_from_cds(short_variant,reference_file):
             exit(1)
     elif ">" in short_variant.get('cds-effect'):
         ###Query for strand information from API
-        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
         url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
         response=requests.get(url)
 
@@ -343,16 +343,18 @@ def main():
     vcf_headers_snv_total = create_vcf_header(date_str, chrs_snv, chr_dic, input_file_name)
 
     # Write headers and data to VCF file
-    with open(output_file_snv, 'w') as f:
-        for header_line in vcf_headers_snv_total:
-            f.write(f"{header_line}\n")
-        df_snv_total_processed.to_csv(f, sep='\t', index=False)
+    if len(df_snv_total_processed)>0:
+        with open(output_file_snv, 'w') as f:
+            for header_line in vcf_headers_snv_total:
+                f.write(f"{header_line}\n")
+            df_snv_total_processed.to_csv(f, sep='\t', index=False)
 
     # Write headers and data to VCF file
-    with open(output_file_indel, 'w') as f:
-        for header_line in vcf_headers_indel:
-            f.write(f"{header_line}\n")
-        df_indel_processed.to_csv(f, sep='\t', index=False)
+    if len(df_indel_processed)>0:
+        with open(output_file_indel, 'w') as f:
+            for header_line in vcf_headers_indel:
+                f.write(f"{header_line}\n")
+            df_indel_processed.to_csv(f, sep='\t', index=False)
 
 if __name__ == "__main__":
     main()

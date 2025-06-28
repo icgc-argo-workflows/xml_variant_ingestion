@@ -159,7 +159,7 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene')
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                 responseA=requests.get(url)
 
@@ -172,7 +172,7 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                 if rearrangement.get('other_gene')=='N/A':
                     rearrangement_data['pos2_strand']="+"
                 else:
-                    gene=rearrangement.get('other-gene')
+                    gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                     responseB=requests.get(url)
 
@@ -206,8 +206,13 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                         rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY - SWAP THEM SO WE ALWAYS WRITE SMALLEST COORD FIRST
-    ###print(rearrangement_data)
-    if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[0]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[0]):
+    print(rearrangement_data)
+    if ("X" in rearrangement_data['Pos1'] and "X" not in rearrangement_data['Pos2']) or ("Y" in rearrangement_data['Pos1'] and "Y" not in rearrangement_data['Pos2']):
+        tmpA=rearrangement_data['Pos1']
+        tmpB=rearrangement_data['Pos2']
+        rearrangement_data['Pos1']=tmpB
+        rearrangement_data['Pos2']=tmpA
+    elif int(re.findall("[0-9]+",rearrangement_data['Pos1'])[0]) > int(re.findall("[0-9]+",rearrangement_data['Pos2'])[0]):
         tmpA=rearrangement_data['Pos1']
         tmpB=rearrangement_data['Pos2']
         rearrangement_data['Pos1']=tmpB
@@ -300,7 +305,7 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene')
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                 responseA=requests.get(url)
 
@@ -313,7 +318,7 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
                 if rearrangement.get('other_gene')=='N/A':
                     rearrangement_data['pos2_strand']="+"
                 else:
-                    gene=rearrangement.get('other-gene')
+                    gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                     responseB=requests.get(url)
 
@@ -429,7 +434,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene')
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                 responseA=requests.get(url)
 
@@ -442,7 +447,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
                 if rearrangement.get('other_gene')=='N/A':
                     rearrangement_data['pos2_strand']="+"
                 else:
-                    gene=rearrangement.get('other-gene')
+                    gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                     responseB=requests.get(url)
 
@@ -499,7 +504,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
                 exit(1)
     else:
         ### If we don't have breakpoint annotation, auto assign the strand
-        gene=rearrangement.get('targeted-gene')
+        gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
         url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
         responseA=requests.get(url)
 
@@ -512,7 +517,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
         if rearrangement.get('other_gene')=='N/A':
             rearrangement_data['pos2_strand']="+"
         else:
-            gene=rearrangement.get('other-gene')
+            gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
             url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
             responseB=requests.get(url)
 
@@ -608,7 +613,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
                     complement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+str(int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1])+1)
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene')
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                 responseA=requests.get(url)
 
@@ -623,7 +628,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['pos2_strand']="+"
                     complement_data['pos2_strand']="+" if responseB.json()['gene']['strand']==1 else "-"
                 else:
-                    gene=rearrangement.get('other-gene')
+                    gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                     responseB=requests.get(url)
 
@@ -779,7 +784,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene')
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
                 responseA=requests.get(url)
 
@@ -789,7 +794,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                 rearrangement_data['pos1_strand']="+" if responseA.json()['gene']['strand']==1 else "-"
 
                 ###Assign arbitary strand if partner gene is missing
-                gene=rearrangement.get('other-gene')
+                gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 if gene.lower()=='n/a':
                     rearrangement_data['pos2_strand']="+"
                 else:
@@ -812,6 +817,30 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]
                 else:
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
+    else:
+        if not rearrangement_data.get('pos1_strand'):
+            gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
+            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+            responseA=requests.get(url)
+
+            if responseA.status_code!=200:
+                print("ERROR_GR1: Unable to ping %s" % url)
+                exit(1)
+            rearrangement_data['pos1_strand']="+" if responseA.json()['gene']['strand']==1 else "-"
+        
+            ###Assign arbitary strand if partner gene is missing
+        if not rearrangement_data.get('pos2_strand'):
+            gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
+            if gene.lower()=='n/a':
+                rearrangement_data['pos2_strand']="+"
+            else:
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                responseB=requests.get(url)
+
+                if responseB.status_code!=200:
+                    print("ERROR_GR2: Unable to ping %s" % url)
+                    exit(1)
+                rearrangement_data['pos2_strand']="+" if responseB.json()['gene']['strand']==1 else "-"
 
     ###BECAUSE WE CANT EVEN EXPECT THEM TO PROVIDE COORDINATES WHERE POS1<POS2 CONSISTENTLY:
     if int(re.findall("[0-9XY]+",rearrangement_data['Pos1'])[1]) > int(re.findall("[0-9XY]+",rearrangement_data['Pos2'])[1]):
@@ -848,6 +877,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                 ("PANIC nothing makes sense")
                 exit(1)
     else:
+        print(rearrangement_data)
         dir[rearrangement_data['Pos1']] = rearrangement_data['pos1_strand']
         dir[rearrangement_data['Pos2']] = rearrangement_data['pos2_strand']
 
@@ -868,7 +898,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
 
     # Create a DataFrame for vcf file
     df_a = pd.DataFrame()
-
+    print(df)
     df_a[['#CHROM', 'POS']] = df['Pos1'].str.split(':', expand=True)
     df_a['POS'] = df_a['POS'].astype(int)
     df_a['ID'] = df['Pos1'].map(junction)
@@ -952,7 +982,7 @@ def main():
             'SRP': rearrangement.get('supporting-read-pairs'),
             'type': rearrangement.get('type'),
             'status': rearrangement.get('status'),
-            'equivocal': rearrangement.get('equivocal'),
+            'equivocal': rearrangement.get('equivocal') if rearrangement.get('equivocal') else "false",
             'analytical-only': rearrangement.get('analytical-only') if rearrangement.get('analytical-only') else "false",
             'genomic-type': rearrangement.find('.//chimeric-junctions').get('genomic-type') if rearrangement.find('.//chimeric-junctions') else None, #unused ignore
             'chimeric-description': rearrangement.find('.//chimeric-junction').get('description') if rearrangement.find('.//chimeric-junctions') else None, #unused ignore
