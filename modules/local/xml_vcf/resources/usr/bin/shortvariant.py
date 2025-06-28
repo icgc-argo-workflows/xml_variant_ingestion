@@ -92,10 +92,10 @@ def update_missing_info_from_cds(short_variant,reference_file):
         start=int(short_variant.get("POS"))
         del_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
         end=start+len(del_sequence)
-        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("ITFG3","FAM234A").replace("KIAA1377","CEP126")
 
         ###Query for strand information from API
-        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("emsy","C11orf30")
         response=requests.get(url)
 
         if response.status_code!=200:
@@ -130,14 +130,14 @@ def update_missing_info_from_cds(short_variant,reference_file):
         start=int(short_variant.get("POS"))
         added_sequence=re.findall("[A-Z]+",short_variant.get("cds-effect"))[0]
         end=start+1
-        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("ITFG3","FAM234A").replace("KIAA1377","CEP126")
 
         ###Query for strand information from API
-        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("emsy","C11orf30")
         response=requests.get(url)
 
         if response.status_code!=200:
-            print("ERRORI1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower())
+            print("ERRORI1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower().replace("emsy","C11orf30"))
             exit(1)
             
         strand=response.json()['gene']['strand']
@@ -155,12 +155,12 @@ def update_missing_info_from_cds(short_variant,reference_file):
             exit(1)
     elif ">" in short_variant.get('cds-effect'):
         ###Query for strand information from API
-        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        gene=short_variant.get('gene').replace("MLL2","KMT2D").replace("ITFG3","FAM234A").replace("KIAA1377","CEP126")
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("emsy","C11orf30")
         response=requests.get(url)
 
         if response.status_code!=200:
-            print("ERRORD1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower())
+            print("ERRORD1: Unable to ping https://www.genenetwork.nl/api/v1/gene/%s" % gene.lower().replace("emsy","C11orf30"))
             exit(1)
             
         strand=response.json()['gene']['strand']

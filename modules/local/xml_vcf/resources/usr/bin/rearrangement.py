@@ -160,7 +160,7 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseA=requests.get(url)
 
                 if responseA.status_code!=200:
@@ -173,7 +173,7 @@ def generate_deletion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['pos2_strand']="+"
                 else:
                     gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     responseB=requests.get(url)
 
                     if responseB.status_code!=200:
@@ -306,7 +306,7 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseA=requests.get(url)
 
                 if responseA.status_code!=200:
@@ -319,7 +319,7 @@ def generate_duplication(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['pos2_strand']="+"
                 else:
                     gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     responseB=requests.get(url)
 
                     if responseB.status_code!=200:
@@ -435,7 +435,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseA=requests.get(url)
 
                 if responseA.status_code!=200:
@@ -448,7 +448,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['pos2_strand']="+"
                 else:
                     gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     responseB=requests.get(url)
 
                     if responseB.status_code!=200:
@@ -505,7 +505,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
     else:
         ### If we don't have breakpoint annotation, auto assign the strand
         gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+        url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
         responseA=requests.get(url)
 
         if responseA.status_code!=200:
@@ -518,7 +518,7 @@ def generate_fusion(rearrangement_data,rearrangement,fasta_file,count):
             rearrangement_data['pos2_strand']="+"
         else:
             gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
             responseB=requests.get(url)
 
             if responseB.status_code!=200:
@@ -614,7 +614,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
             else:
                 ### If we don't have annotations to work with query external API to determine strand
                 gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseA=requests.get(url)
 
                 if responseA.status_code!=200:
@@ -629,7 +629,7 @@ def generate_inversion(rearrangement_data,rearrangement,fasta_file,count):
                     complement_data['pos2_strand']="+" if responseB.json()['gene']['strand']==1 else "-"
                 else:
                     gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     responseB=requests.get(url)
 
                     if responseB.status_code!=200:
@@ -784,8 +784,8 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                     rearrangement_data['Pos2']=re.findall("^chr[0-9XY]+",rearrangement_data['Pos2'])[0]+":"+re.findall("[0-9XY]+",rearrangement_data['Pos2'])[-1]
             else:
                 ### If we don't have annotations to work with query external API to determine strand
-                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("ITFG3","FAM234A").replace("KIAA1377","CEP126").replace("EMSY","C11ORF30")
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseA=requests.get(url)
 
                 if responseA.status_code!=200:
@@ -798,7 +798,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
                 if gene.lower()=='n/a':
                     rearrangement_data['pos2_strand']="+"
                 else:
-                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                    url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                     responseB=requests.get(url)
 
                     if responseB.status_code!=200:
@@ -820,7 +820,7 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
     else:
         if not rearrangement_data.get('pos1_strand'):
             gene=rearrangement.get('targeted-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
-            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+            url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
             responseA=requests.get(url)
 
             if responseA.status_code!=200:
@@ -830,11 +830,11 @@ def generate_rearrangement(rearrangement_data,rearrangement,fasta_file,count):
         
             ###Assign arbitary strand if partner gene is missing
         if not rearrangement_data.get('pos2_strand'):
-            gene=rearrangement.get('other-gene').replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
+            gene=rearrangement.get('other-gene')
             if gene.lower()=='n/a':
                 rearrangement_data['pos2_strand']="+"
             else:
-                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower()
+                url='https://www.genenetwork.nl/api/v1/gene/%s' % gene.lower().replace("MLL2","KMT2D").replace("itfg3","FAM234A").replace("kiaa1377","CEP126").replace("fgf14","FGF14").replace("emsy","C11ORF30")
                 responseB=requests.get(url)
 
                 if responseB.status_code!=200:
