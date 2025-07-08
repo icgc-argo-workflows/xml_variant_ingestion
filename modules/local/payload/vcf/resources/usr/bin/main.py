@@ -85,7 +85,7 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
         experimental_strategy,
         date_str,
         payload['workflow']['workflow_short_name'],
-        seq_experiment_analysis_dict['variant_class'].replace(",", "-").lower(),
+        seq_experiment_analysis_dict['variant_class'].lower(),
         variant_type,
         file_ext
     )
@@ -175,7 +175,7 @@ def main(args):
     else:
         updated_pipeline_info['FoundationOneCDx'] = ""
 
-    variant_class=seq_experiment_analysis_dict.get('variant_class').split(",")
+    variant_class=seq_experiment_analysis_dict.get('variant_class').split("+")
     variant_class.sort()
     payload = {
         'studyId': seq_experiment_analysis_dict.get('program_id'),
@@ -200,9 +200,9 @@ def main(args):
         'variant_calling_strategy': seq_experiment_analysis_dict.get('variant_calling_strategy'),
         'workflow': {
             'genome_build': 'GRCh38',
-            'workflow_name': args.wf_name.replace(" ",""),
+            'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
             'workflow_version': args.wf_version,
-            'workflow_short_name': args.wf_name.replace(" ",""),
+            'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),
             'pipeline_info': updated_pipeline_info,
             'inputs' : [{ "analysis_type": "variant_calling_supplement","tumour_analysis_id": args.analysis_id}]
         },
@@ -215,7 +215,7 @@ def main(args):
             'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
-        'variant_class' : "+".join(variant_class),  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
+        'variant_class' : ",".join(variant_class),  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
         'files': []
     }
 
