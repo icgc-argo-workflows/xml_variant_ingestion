@@ -313,6 +313,8 @@ def main():
         short_variant_data = extract_data_from_short_variant(short_variant)
         if short_variant_data['ALT'] is None and short_variant_data['REF'] is None and short_variant_data['cds-effect'] is not None and short_variant_data['gene'] is not None:
             update_missing_info_from_cds(short_variant_data,reference_file)
+        elif short_variant_data['variant-type']==None and ">" in short_variant_data.get('cds-effect'):
+            short_variant_data['variant-type']= 'multiple-nucleotide-substitution' if len(re.findall("[a-zA-Z]+",short_variant_data.get('cds-effect'))[0])>1 else 'single-nucleotide-substitution'
         data.append(short_variant_data)
         print(short_variant.get('REF'),short_variant.get('ALT'),short_variant.get('cds-effect'))
         print(short_variant_data)
@@ -341,7 +343,15 @@ def main():
     # Create VCF headers
     vcf_headers_indel = create_vcf_header(date_str, chrs_indel, chr_dic, input_file_name)   # indel
     vcf_headers_snv_total = create_vcf_header(date_str, chrs_snv, chr_dic, input_file_name)
-
+    # print("df_snv",df_snv)
+    # print("df_indel",df_indel)
+    # print("df_mnv",df_mnv)
+    # print("df_snvs",df_snvs)
+    # print("df_snv_total",df_snv_total)
+    # print(len(df_snv_total_processed))
+    # print("df_snv_total_processed",df_snv_total_processed)
+    # print(len(df_indel_processed))
+    # print("df_indel_processed",df_indel_processed)
     # Write headers and data to VCF file
     if len(df_snv_total_processed)>0:
         with open(output_file_snv, 'w') as f:

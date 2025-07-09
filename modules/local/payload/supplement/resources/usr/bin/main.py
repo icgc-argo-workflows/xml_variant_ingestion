@@ -194,13 +194,13 @@ def main(args):
             updated_pipeline_info[new_tool]=version
     if seq_experiment_analysis_dict.get('analysis_tools (tools and versions)'):
         tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
-        updated_pipeline_info['FoundationOneCDx'] = tools_dict
+        updated_pipeline_info[seq_experiment_analysis_dict.get("workflow_name")] = tools_dict
         for key, value in updated_pipeline_info.items():
             for sub_key, sub_value in value.items():
                 value[sub_key] = str(sub_value)
             updated_pipeline_info[key] = value
     else:
-        updated_pipeline_info['FoundationOneCDx'] = ""
+        updated_pipeline_info[seq_experiment_analysis_dict.get("workflow_name")] = ""
 
 
     payload = {

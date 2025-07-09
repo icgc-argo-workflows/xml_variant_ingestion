@@ -167,13 +167,13 @@ def main(args):
             updated_pipeline_info[new_tool]=version
     if seq_experiment_analysis_dict.get('analysis_tools (tools and versions)'):
         tools_dict = dict(tool.split(' ', 1) for tool in seq_experiment_analysis_dict.get('analysis_tools (tools and versions)').split(', '))
-        updated_pipeline_info['FoundationOneCDx'] = tools_dict
+        updated_pipeline_info[seq_experiment_analysis_dict.get("workflow_name")] = tools_dict
         for key, value in updated_pipeline_info.items():
             for sub_key, sub_value in value.items():
                 value[sub_key] = str(sub_value)
             updated_pipeline_info[key] = value
     else:
-        updated_pipeline_info['FoundationOneCDx'] = ""
+        updated_pipeline_info[seq_experiment_analysis_dict.get("workflow_name")] = ""
 
     variant_class=seq_experiment_analysis_dict.get('variant_class').split("+")
     variant_class.sort()
@@ -201,7 +201,7 @@ def main(args):
         'workflow': {
             'genome_build': 'GRCh38',
             'workflow_name': seq_experiment_analysis_dict.get('workflow_name'),
-            'workflow_version': args.wf_version,
+            'workflow_version': seq_experiment_analysis_dict.get('workflow_version'),
             'workflow_short_name': seq_experiment_analysis_dict.get('workflow_short_name'),
             'pipeline_info': updated_pipeline_info,
             'inputs' : [{ "analysis_type": "variant_calling_supplement","tumour_analysis_id": args.analysis_id}]
