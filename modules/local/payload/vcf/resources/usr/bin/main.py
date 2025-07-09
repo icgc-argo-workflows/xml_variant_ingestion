@@ -212,7 +212,7 @@ def main(args):
             'experimental_strategy': seq_experiment_analysis_dict.get('experimental_strategy'),
             'target_capture_kit': seq_experiment_analysis_dict.get('target_capture_kit'),
             'primary_target_regions': seq_experiment_analysis_dict.get('primary_target_regions'),
-            'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions'),
+            'capture_target_regions': seq_experiment_analysis_dict.get('capture_target_regions') or None,
             'coverage': seq_experiment_analysis_dict.get('coverage').split(',')
         },
         'variant_class' : ",".join(variant_class),  # update to "Somatic/Germline" seq_experiment_analysis_dict.get('coverage') after schema update
