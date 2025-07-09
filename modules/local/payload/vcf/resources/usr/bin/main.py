@@ -85,7 +85,7 @@ def rename_file(f, payload, seq_experiment_analysis_dict, date_str):
         experimental_strategy,
         date_str,
         payload['workflow']['workflow_short_name'],
-        seq_experiment_analysis_dict['variant_class'].lower(),
+        seq_experiment_analysis_dict['variant_class'].lower().replace("+","_"),
         variant_type,
         file_ext
     )
